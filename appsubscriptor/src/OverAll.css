@@ -27,7 +27,7 @@
 }
 
 .form-label{
-    color: black;
+    color: rgb(87, 81, 81);
     font-size: 15px;
     font-weight: bold;
     margin-bottom: 2px;
@@ -81,4 +81,8 @@
     width: 40%;
     padding: 10px;
     border-radius: 5px;
+}
+
+.logo{
+    width: 5%;
 }
