@@ -1,14 +1,41 @@
 import { Component } from "react";
+
+import Cookies from 'js-cookie'
+
+
+// import initJWTService from 'jwt-service';
+
 import {AiOutlineArrowRight} from 'react-icons/ai'
+
 
 import '../../OverAll.css'
 
 
 class Login extends Component{
 
+    constructor(props){
+        super(props)
+        console.log('Please SignIn / SignUp',props)
+    }
     
 
     state = {currentState:'SignIn',username:'',password:'',RegistrationDetails:{user:'',password:'',age:'',mobile:''}}
+
+    getData = async() => {
+        console.log('Starting')
+        const res = await fetch('http://localhost:3005')
+        console.log(res)
+        if(res.status === 200){
+            const data = await res.json()
+            console.log(data)
+        }
+        
+    }
+
+
+    // componentDidMount = () => {
+    //     this.getData()
+    // }
 
     changeState = (newState) => {
         
@@ -30,10 +57,27 @@ class Login extends Component{
         this.setState({username:value})
     }
 
-    handleSignIn = e => {
+    handleSignIn = async(e) => {
         e.preventDefault()
         const {username,password,currentState} = this.state
         console.log(username,password,currentState)
+        const options = {
+            method:'POST',
+            body:JSON.stringify({user:username,password:password}),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+        }
+        const res = await fetch(`http://localhost:3005/login/`,options)
+        console.log(res)
+        if(res.status === 200){
+            const data = await res.json()
+            console.log(data)
+            Cookies.set('jwt_token',data.jwt_token,{expires:30})
+
+        }else{
+            console.log('User Not Found')
+        }
     }
 
     handleRegAge = e => {
@@ -60,10 +104,28 @@ class Login extends Component{
         this.setState({RegistrationDetails:{...RegistrationDetails,user:value}})
     }
 
-    handleRegSubmit = e => {
+    handleRegSubmit = async(e) => {
         e.preventDefault()
         const {RegistrationDetails} = this.state
         console.log(RegistrationDetails)
+        const options = {
+            method: "POST",
+            body: JSON.stringify({...RegistrationDetails}),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+            
+        }
+        const res = await fetch(`http://localhost:3005/register/`,options)
+        console.log(res)
+        if(res.status === 200){
+            const data = await res.json()
+            console.log(data)
+            Cookies.set('jwt_token',data.jwt_token,{expires:30})
+        }else{
+            const data = await res.json()
+            console.log(data)
+        }
     }
 
 
