@@ -1,12 +1,11 @@
-
+require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const express = require('express')
 const bcrypt = require('bcrypt')
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://siva2002ismart2002:uJPPL57SoI2Y1QLt@appsubscriptor.81eelwf.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
+const client = new MongoClient(process.env.URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -98,8 +97,8 @@ async function run() {
     // await client.db("admin").command({ ping: 1 });
     
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    app.listen(3005)
-    console.log("Server is running at 3005")
+    app.listen(process.env.PORT)
+    console.log("Server is running")
     
   }catch(e){
     console.error(e)
