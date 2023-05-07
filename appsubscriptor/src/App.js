@@ -1,5 +1,8 @@
 import { Component } from 'react';
+import {Switch,BrowserRouter, Route} from 'react-router-dom'
 import Login from './Components/Login'
+import Home from './Components/Home'
+import ProtectedRoute from './Components/ProtectedRoute';
 import './App.css';
 
 class App extends Component{
@@ -12,7 +15,13 @@ class App extends Component{
   render(){
     console.log('In Main Component')
     return(
-      <Login />
+      <BrowserRouter>
+      <Switch>
+        <Route exact path='/login' component={Login} />
+        <ProtectedRoute exact path='/' component={Home} />
+      </Switch>
+      </BrowserRouter>
+      // <Login />
     )
   }
 }

@@ -1,5 +1,6 @@
 import { Component } from "react";
 
+
 import Cookies from 'js-cookie'
 
 
@@ -21,16 +22,7 @@ class Login extends Component{
 
     state = {currentState:'SignIn',username:'',password:'',RegistrationDetails:{user:'',password:'',age:'',mobile:''}}
 
-    getData = async() => {
-        console.log('Starting')
-        const res = await fetch('http://localhost:3005')
-        console.log(res)
-        if(res.status === 200){
-            const data = await res.json()
-            console.log(data)
-        }
-        
-    }
+   
 
 
     // componentDidMount = () => {
@@ -74,7 +66,8 @@ class Login extends Component{
             const data = await res.json()
             console.log(data)
             Cookies.set('jwt_token',data.jwt_token,{expires:30})
-
+            const {history} = this.props
+            history.replace('/')
         }else{
             console.log('User Not Found')
         }
@@ -122,6 +115,8 @@ class Login extends Component{
             const data = await res.json()
             console.log(data)
             Cookies.set('jwt_token',data.jwt_token,{expires:30})
+            const {history} = this.props
+            history.replace('/')
         }else{
             const data = await res.json()
             console.log(data)
@@ -179,12 +174,18 @@ class Login extends Component{
         }
     }
 
+    
 
     render(){
         console.log('In Login Page')
         const {currentState} = this.state
         const signInColor = currentState === 'SignIn'? 'blue':'grey'
         const RegisterColor = currentState !== 'SignIn'? 'blue':'grey'
+        const jwt_token = Cookies.get('jwt_token')
+        if(jwt_token !== undefined){
+            const {history} = this.props
+            history.replace('/')
+        }
     
         return(
             <div className="mainCont">
