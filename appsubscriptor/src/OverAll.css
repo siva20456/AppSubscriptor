@@ -5,7 +5,7 @@
     align-items: center;
     height: 100vh;
     padding: 20px;
-    background-color: aliceblue;
+    background-color: #ffffff;
 }
 
 .form-cont{
@@ -24,6 +24,7 @@
     display: flex;
     flex-direction: column;
     margin: 10px;
+    width: 100%;
 }
 
 .form-label{
@@ -38,7 +39,7 @@
     border: solid 1px rgb(147, 147, 154);
     padding: 5px;
     border-radius: 5px;
-    width: 250px;
+    width: 75%;
     outline: none;
     height: 20px;
 }
@@ -57,6 +58,7 @@
     height: 35px;
     margin: 10px;
 }
+
 
 .rowCont{
     display: flex;
@@ -85,4 +87,228 @@
 
 .logo{
     width: 5%;
+}
+
+@media screen and  (max-width :1200px) {
+    .submit-btn{
+        width:60%
+    }
+    .logo{
+        width: 20%;
+    }
+
+}
+
+@media screen and (max-width:920px) {
+    .state-btn{
+        width: 80%;
+        margin: 10px;
+    }
+    .rowCont{
+        width: 40%;
+    }
+    .form-cont{
+        width: 40%;
+    }
+}
+
+.Header-row-cont{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f9f9f9;
+    width: 100%;
+    height: 40px;
+}
+
+.header-logo{
+    width: 4%;
+}
+
+.logout-btn{
+    background-color: transparent;
+    border: solid 1px skyblue;
+    border-radius: 5px;
+    color: skyblue;
+    padding: 5px;
+    width: 100px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.home-page{
+    max-height: 90vh !important;
+    overflow-y: none;
+
+}
+
+.diver{
+    max-height: 90vh !important;
+    display: flex;
+    flex-direction: row;
+}
+
+.home-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 50px;
+    margin-left: 20px;
+    width: 80%;
+    overflow-y: scroll;
+}
+
+.search-container{
+    display: flex;
+    flex-direction: row;
+    border: solid 1px grey;
+    outline: none;
+    width: 30%;
+}
+
+.search-input{
+    outline: none;
+    border: none;
+    border-right: solid 1px grey;
+    padding: 5px;
+    background-color: transparent;
+    width: 90%
+}
+
+
+.search-logo{
+    color: black;
+    padding: 10px;
+}
+
+.list-container{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 20px;
+    list-style-type: none;
+}
+
+.seller-cont{
+    display: flex;
+    flex-direction: row;
+    padding: 30px;
+    background-color: aliceblue;
+    align-self: center;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.app-logo{
+    width: 20%;
+    padding: 5px;
+}
+
+.decription-cont{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.app-desc{
+    color: rgb(87, 86, 86);
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Bree Serif';
+    padding: 10px;
+}
+
+.user-desc{
+    color: dimgray;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px;
+}
+
+.last-det{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    width: 25%;
+}
+
+.price-cont{
+    display: flex;
+    flex-direction: row !important;
+    
+}
+
+.price-text{
+    color: red;
+    font-size: 10px;
+}
+
+.price{
+    color: black;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.grab-btn{
+    display: flex;
+    background-color: transparent;
+    border: solid 1px black;
+    color: green;
+    border-radius: 5px;
+    padding: 5px;
+    flex-direction: row;
+    justify-content: space-around;
+    cursor: pointer;
+    width: 50%;
+    align-self: flex-end;
+}
+
+.sidebar-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 20%;
+    background-color: #f9f9f9;
+    padding-top: 20px;
+}
+
+.sidebar-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 20px;
+    width: 90%;
+}
+
+.side-log{
+    font-size: 25px;
+    padding: 5px;
+}
+
+.item-name{
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.selected{
+    color: red;
+    background-color: lightgrey;
+}
+
+
+@media  screen and (max-width:1000px) {
+    .header-logo{
+        width: 10%;
+    }
+}
+
+@media  screen and (max-width:800px) {
+    .header-logo{
+        width: 15%;
+    }
 }

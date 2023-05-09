@@ -76,14 +76,25 @@ app.post('/register/',async(req,res,next) => {
             }
       const jwt_token = jwt.sign(payload,`Secret Token of ${user}`)
       res.send({jwt_token})
+    }else if(db_user !== null){
+      res.status(400).send({error:'Username is already in use'})
     }else{
-      res.send({error:'Username is already in use'})
-      res.status(400)
+      res.status(400).send({error:'Try again with defferent values'})
     }
     // console.log(params.details)
     
     
 
+  }catch(e){
+    console.error(e)
+  }
+})
+
+
+app.get('/',async(req,res,next) => {
+  try{
+    const app_data = await db.collection('app_data').find({}).toArray()
+    res.status(200).send(app_data)
   }catch(e){
     console.error(e)
   }

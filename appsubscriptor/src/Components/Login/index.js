@@ -14,6 +14,9 @@ import '../../OverAll.css'
 
 class Login extends Component{
 
+
+    PORT = 'YOUR_LOCAL_PORT'
+
     constructor(props){
         super(props)
         console.log('Please SignIn / SignUp',props)
@@ -49,8 +52,7 @@ class Login extends Component{
         this.setState({username:value})
     }
 
-    handleSignIn = async(e) => {
-        e.preventDefault()
+    requestSignIn = async() => {
         const {username,password,currentState} = this.state
         console.log(username,password,currentState)
         const options = {
@@ -60,7 +62,7 @@ class Login extends Component{
                 "Content-type": "application/json; charset=UTF-8"
               }
         }
-        const res = await fetch(`http://localhost:3005/login/`,options)
+        const res = await fetch(`http://localhost:${this.PORT}/login/`,options)
         console.log(res)
         if(res.status === 200){
             const data = await res.json()
@@ -70,6 +72,18 @@ class Login extends Component{
             history.replace('/')
         }else{
             console.log('User Not Found')
+            const data = await res.json()
+            alert(data.data)
+        }
+    }
+
+    handleSignIn = (e) => {
+        e.preventDefault()
+        const {username,password} = this.state
+        if(username === "" | password === ""){
+            alert('Please give valid inputs')
+        }else{
+            this.requestSignIn()
         }
     }
 
@@ -97,8 +111,7 @@ class Login extends Component{
         this.setState({RegistrationDetails:{...RegistrationDetails,user:value}})
     }
 
-    handleRegSubmit = async(e) => {
-        e.preventDefault()
+    requestRegister = async() => {
         const {RegistrationDetails} = this.state
         console.log(RegistrationDetails)
         const options = {
@@ -109,7 +122,7 @@ class Login extends Component{
             }
             
         }
-        const res = await fetch(`http://localhost:3005/register/`,options)
+        const res = await fetch(`http://localhost:${this.PORT}/register/`,options)
         console.log(res)
         if(res.status === 200){
             const data = await res.json()
@@ -120,6 +133,17 @@ class Login extends Component{
         }else{
             const data = await res.json()
             console.log(data)
+            alert(data.error)
+        }
+    }
+
+    handleRegSubmit = async(e) => {
+        e.preventDefault()
+        const {RegistrationDetails} = this.state
+        if(RegistrationDetails.mobile === "" | RegistrationDetails.user==="" | RegistrationDetails.password===""){
+            alert("Please provide valid inputs")
+        }else{
+            this.requestRegister()
         }
     }
 
@@ -142,11 +166,11 @@ class Login extends Component{
     renderRegister = () => (
         <form className="form-cont" onSubmit={this.handleRegSubmit} >
             <div className="input-cont">
-            <label htmlFor="username" className="form-label">USERNAME</label>
+            <label htmlFor="username" className="form-label">USERNAME <span style={{color:'red'}}>*</span></label>
             <input type="text" id="username" className="form-input" placeholder="Username" onChange={this.handleRegUser}  />
             </div>
             <div className="input-cont">
-            <label htmlFor="mobile" className="form-label">Mobile Number</label>
+            <label htmlFor="mobile" className="form-label">Mobile Number <span style={{color:'red'}}>*</span></label>
             <input type="text" id="mobile" className="form-input" placeholder="Number" onChange={this.handleRegMobile}  />
             </div>
             <div className="input-cont">
@@ -154,7 +178,7 @@ class Login extends Component{
             <input type="number" id="age" className="form-input" placeholder="Age" onChange={this.handleRegAge}  />
             </div>
             <div className="input-cont">
-            <label htmlFor="password" className="form-label">SET PASSWORD</label>
+            <label htmlFor="password" className="form-label">SET PASSWORD <span style={{color:'red'}}>*</span></label>
             <input type="password" id='password' className="form-input" placeholder="Password" onChange={this.handleRegPass}  />
             </div>
             <button className="submit-btn">Register Now</button>
