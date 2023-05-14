@@ -22,7 +22,7 @@ const db = client.db("AppSubscriptor")
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3004");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept , Authorization");
   next()
 });
 
@@ -74,7 +74,7 @@ app.post('/register/',async(req,res,next) => {
       const payload = {
               username:user
             }
-      const jwt_token = jwt.sign(payload,`Secret Token of ${user}`)
+      const jwt_token = jwt.sign(payload,`Secret Token`)
       res.send({jwt_token})
     }else if(db_user !== null){
       res.status(400).send({error:'Username is already in use'})
@@ -97,6 +97,37 @@ app.get('/',async(req,res,next) => {
     res.status(200).send(app_data)
   }catch(e){
     console.error(e)
+  }
+})
+
+app.post('/addOffer/',async(req,res,next) => {
+  try{
+    console.log(req.body)
+    let jwt_token;
+    const authHeader = req.headers['authorization']
+    if(authHeader !== undefined){
+      jwt_token = authHeader.split(" ")[1]
+    }
+    if(jwt_token === undefined){
+      res.status(401).send({data:'Not Authorized Yet to add offer.'})
+    }else{
+      jwt.verify(jwt_token,'Secret Token',async(error,payload) => {
+        if(error){
+          res.status(401).send({data:'Not Authorized Yet to add offer.'})
+        }else{
+          // console.log(payload)
+          const {username} = payload
+          const {amount,plan,expiry,devicesIncluded,devicesLookingFor,platform,imgUrl} = req.body
+          const feed = await db.collection('app_data').insertOne({app_name:platform,price:amount,plan_duration:plan,offered_user:username,img_url:imgUrl,expiry_date:expiry,devicesIncluded,devicesLookingFor})
+          console.log(feed)
+          res.status(200).send({data:'Offer Added Successfully.'})
+        }
+      })
+    }
+  }
+  catch(e){
+    console.error(e)
+    res.status(400).send({data:'Something went wrong , Please Try Again.'})
   }
 })
 

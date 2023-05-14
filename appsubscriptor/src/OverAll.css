@@ -138,7 +138,7 @@
 }
 
 .home-page{
-    max-height: 90vh !important;
+    height: 90vh !important;
     overflow-y: none;
 
 }
@@ -147,6 +147,7 @@
     max-height: 90vh !important;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 .home-cont{
@@ -202,7 +203,7 @@
 }
 
 .app-logo{
-    width: 20%;
+    width: 25%;
     padding: 5px;
 }
 
@@ -210,11 +211,12 @@
     display: flex;
     flex-direction: column;
     margin-left: 20px;
+    width: 100%;
 }
 
 .app-desc{
     color: rgb(87, 86, 86);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     font-family: 'Bree Serif';
     padding: 10px;
@@ -262,7 +264,7 @@
     flex-direction: row;
     justify-content: space-around;
     cursor: pointer;
-    width: 50%;
+    width: 40%;
     align-self: flex-end;
 }
 
@@ -270,7 +272,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     width: 20%;
     background-color: #f9f9f9;
     padding-top: 20px;
@@ -282,7 +284,8 @@
     justify-content: flex-start;
     align-items: center;
     padding-left: 20px;
-    width: 90%;
+    width: 100%;
+    color: #000000;
 }
 
 .side-log{
@@ -299,6 +302,57 @@
     color: red;
     background-color: lightgrey;
 }
+
+.contribute-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    height: 100vh;
+    width: 80%;
+    padding-right: 20px;
+    padding-left: 10px;
+
+}
+
+.adder-form{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 90%;
+    background-color:transparent;
+    border-radius: 10px;
+    border: solid 2px black;
+}
+
+.heading{
+    color: blue;
+    font-weight: bold;
+    font-size: 25px;
+    align-self: flex-start;
+    padding: 20px;
+}
+
+.contribute-input{
+    width: 60%;
+}
+
+.input-cont-contribute{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 10px;
+    width: 40%;
+}
+
+.submit-btn:hover{
+    background-color: transparent;
+    border: solid 1px grey;
+    color: black;
+}
+
 
 
 @media  screen and (max-width:1000px) {
