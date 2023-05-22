@@ -10,8 +10,9 @@ const Header = () => {
 
     const Logout = () => {
         Cookies.remove('jwt_token')
-        history.replace('/login')
+        history.replace('/login') 
     }
+
 
     return(
         <div className='Header-row-cont'>

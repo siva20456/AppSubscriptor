@@ -4,9 +4,12 @@ import { Component } from "react";
 import Cookies from 'js-cookie'
 
 
+
 // import initJWTService from 'jwt-service';
 
 import {AiOutlineArrowRight} from 'react-icons/ai'
+
+import {TiTick} from 'react-icons/ti'
 
 
 import '../../OverAll.css'
@@ -23,7 +26,7 @@ class Login extends Component{
     }
     
 
-    state = {currentState:'SignIn',username:'',password:'',RegistrationDetails:{user:'',password:'',age:'',mobile:''}}
+    state = {currentState:'SignIn',username:'',password:'',otp:'',inputOTP:'',RegistrationDetails:{user:'',password:'',age:'',mobile:'',mail:'',isMailVerified:false,showVerifyingEles:'none'}}
 
    
 
@@ -68,6 +71,7 @@ class Login extends Component{
             const data = await res.json()
             console.log(data)
             Cookies.set('jwt_token',data.jwt_token,{expires:30})
+            Cookies.set('user',username,{expires:30})
             const {history} = this.props
             history.replace('/')
         }else{
@@ -83,6 +87,7 @@ class Login extends Component{
         if(username === "" | password === ""){
             alert('Please give valid inputs')
         }else{
+
             this.requestSignIn()
         }
     }
@@ -99,6 +104,7 @@ class Login extends Component{
         this.setState({RegistrationDetails:{...RegistrationDetails,mobile:value}})
     }
 
+
     handleRegPass = e => {
         const {value} = e.target
         const {RegistrationDetails} = this.state
@@ -109,6 +115,47 @@ class Login extends Component{
         const {value} = e.target
         const {RegistrationDetails} = this.state
         this.setState({RegistrationDetails:{...RegistrationDetails,user:value}})
+    }
+
+    handleRegMail = e => {
+        const {value} = e.target
+        const {RegistrationDetails} = this.state
+        this.setState({RegistrationDetails:{...RegistrationDetails,mail:value}})
+    }
+
+    handleOTP = e => {
+        const {value} = e.target
+        this.setState({inputOTP:value})
+    }
+
+    verifyOtp = () => {
+        const {otp,inputOTP,RegistrationDetails} = this.state
+        if(otp === parseInt(inputOTP)){
+            console.log('OK')
+            this.setState({RegistrationDetails:{...RegistrationDetails,isMailVerified:true}})
+        }else{
+            alert('Invalid OTP, try again by sending it.')
+        }
+    }
+
+    sendMailOtp = async() => {
+        const {RegistrationDetails} = this.state
+        const url = `http://localhost:${this.PORT}/verifyMail`
+        const data = {mail:RegistrationDetails.mail}
+        const options = {
+            method:'POST',
+            headers:{
+              "Content-type": "application/json; charset=UTF-8"
+            },
+            body:JSON.stringify(data)
+        }
+        const res = await fetch(url,options)
+        // console.log(res)
+        if(res.ok){
+            const data = await res.json()
+            // console.log(data)
+            this.setState({RegistrationDetails:{...RegistrationDetails,showVerifyingEles:'flex'},otp:parseInt(data.otp)})
+        }
     }
 
     requestRegister = async() => {
@@ -128,6 +175,7 @@ class Login extends Component{
             const data = await res.json()
             console.log(data)
             Cookies.set('jwt_token',data.jwt_token,{expires:30})
+            Cookies.set('user',RegistrationDetails.user,{expires:30})
             const {history} = this.props
             history.replace('/')
         }else{
@@ -140,9 +188,13 @@ class Login extends Component{
     handleRegSubmit = async(e) => {
         e.preventDefault()
         const {RegistrationDetails} = this.state
-        if(RegistrationDetails.mobile === "" | RegistrationDetails.user==="" | RegistrationDetails.password===""){
+        if(RegistrationDetails.mobile === "" | RegistrationDetails.user==="" | RegistrationDetails.password==="" | RegistrationDetails.mail===""){
             alert("Please provide valid inputs")
-        }else{
+        }
+        else if(RegistrationDetails.isMailVerified===false){
+            alert('Please Verify the mail')
+        }
+        else{
             this.requestRegister()
         }
     }
@@ -174,6 +226,17 @@ class Login extends Component{
             <input type="text" id="mobile" className="form-input" placeholder="Number" onChange={this.handleRegMobile}  />
             </div>
             <div className="input-cont">
+            <label htmlFor="email" className="form-label">E-Mail <span style={{color:'red'}}>*</span>{this.state.RegistrationDetails.isMailVerified?<TiTick style={{color:"green",fontSize:20,border:'solid 1px green',borderRadius:10,marginLeft:5}} />:''}</label>
+            <input type="text" id="email" className="form-input" placeholder="e-mail" onChange={this.handleRegMail}  />
+            <br/>
+            <button type="button" style={{alignSelf:"flex-start",cursor:"pointer"}} onClick={this.sendMailOtp}>Send OTP</button>
+            <br/>
+            <div style={{display:"flex"}}>
+            <input type="text" placeholder="Enter otp" onChange={this.handleOTP} style={{display:this.state.RegistrationDetails.showVerifyingEles}} className="form-label" />{this.state.RegistrationDetails.isMailVerified?<TiTick style={{color:"green",fontSize:20,border:'solid 1px green',borderRadius:10,marginLeft:5}} />:''}
+            </div>
+            <button type='button'  onClick={this.verifyOtp} style={{display:this.state.RegistrationDetails.showVerifyingEles,alignSelf:'flex-start',cursor:"pointer"}} >Verify</button>
+            </div>
+            <div className="input-cont">
             <label htmlFor="age" className="form-label">AGE</label>
             <input type="number" id="age" className="form-input" placeholder="Age" onChange={this.handleRegAge}  />
             </div>
@@ -181,7 +244,7 @@ class Login extends Component{
             <label htmlFor="password" className="form-label">SET PASSWORD <span style={{color:'red'}}>*</span></label>
             <input type="password" id='password' className="form-input" placeholder="Password" onChange={this.handleRegPass}  />
             </div>
-            <button className="submit-btn">Register Now</button>
+            <button type="submit" className="submit-btn">Register Now</button>
         </form>
     )
 
