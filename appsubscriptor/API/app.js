@@ -39,7 +39,7 @@ io.on("connection",(socket) => {
   
   socket.on("join_room",(data) => {
     socket.join(data);
-    console.log("Joined at room",data)
+    console.log("Joined room",data)
   })
 
   socket.on('send_message',async(data) => {
