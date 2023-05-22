@@ -105,7 +105,7 @@ const authorizeTheUser = async(req,res,next) => {
 app.post('/verifyMail',async(req,res,next) => {
   const {mail} = req.body
   console.log(req.body)
-  sgMail.setApiKey('SG.grEWXfY_RD27FrfGF3oeQg.AtCUoJnrWFGvA5RoQyr2ecWIuyZnI8F25UzroU3Xzxc');
+  sgMail.setApiKey('SEND_GRID_API_KEY');
   const code = Math.ceil(Math.random()*100000)
   console.log(code)
  
