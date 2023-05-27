@@ -1,6 +1,5 @@
 import {BsFillArrowRightCircleFill} from 'react-icons/bs'
 
-import io from 'socket.io-client'
 
 import Popup from 'reactjs-popup'
 
@@ -14,7 +13,6 @@ import '../../OverAll.css'
 
 const PORT = 'LOCAL_PORT'
 
-const socket = io.connect(`http://localhost:${PORT}`)
 
 const SellerTab = ({props,owe}) => {
     
@@ -43,27 +41,31 @@ const SellerTab = ({props,owe}) => {
     const connectTheUser = async(close) => {
         console.log('connecting')
         const user = Cookies.get('user')
-        const data = {
-            platform:app_name,
-            raised_for:offered_user,
-            raised_by:user,
-            description:`Hey ${offered_user}, you have a chat request from ${user} regarding the ${app_name} offer you raised...`
-        }
-        const options = {
-            method:'POST',
-            headers:{
-                "Content-type": "application/json; charset=UTF-8",
-            },
-            body:JSON.stringify(data),
-        }
-        const res = await fetch(`http://localhost:${PORT}/addNotification`,options)
-        console.log(res)
-        if(res.status === 200){
-            const data = await res.json()
-            alert('Chat Request raised..!')
-            close()
+        if(offered_user  !== user){    
+            const data = {
+                platform:app_name,
+                raised_for:offered_user,
+                raised_by:user,
+                description:`Hey ${offered_user}, you have a chat request from ${user} regarding the ${app_name} offer you raised...`
+            }
+            const options = {
+                method:'POST',
+                headers:{
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+                body:JSON.stringify(data),
+            }
+            const res = await fetch(`http://localhost:${PORT}/addNotification`,options)
+            console.log(res)
+            if(res.status === 200){
+                const data = await res.json()
+                alert('Chat Request raised..!')
+                close()
+            }else{
+                alert('Failed to connect.. Try Agian')
+            }
         }else{
-            alert('Failed to connect.. Try Agian')
+            alert('This Contribution is Yours...!')
         }
     }
 
@@ -129,6 +131,7 @@ const SellerTab = ({props,owe}) => {
                         <button
                         type="button"
                         className="trigger-button"
+                        style={{cursor:'pointer'}}
                         onClick={() => close()}
                         >
                         Close
@@ -136,6 +139,7 @@ const SellerTab = ({props,owe}) => {
                         <button
                         type="button"
                         className="trigger-button"
+                        style={{cursor:'pointer'}}
                         onClick={() => connectTheUser(close)}
                         >
                         Connect

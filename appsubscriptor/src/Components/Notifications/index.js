@@ -57,8 +57,13 @@ class Notifications extends Component{
         if(res.status === 200){
             console.log(res)
             this.getData()
-            history.replace('/notifications')
+            history.replace('/home')
         }
+    }
+
+    handleChat = () => {
+        const {history} = this.props
+        history.replace('/userChat')
     }
 
 
@@ -76,7 +81,7 @@ class Notifications extends Component{
                         {data.length !== 0?<ul className="list-note-container">
                             {data.map((e,i) => <li className="note-tab" key = {i}>
                                 <h1 className="app-desc">{e.description}</h1>
-                                <button type="button" className="chat-btn">Chat</button>
+                                <button type="button" onClick={this.handleChat} className="chat-btn">Chat</button>
                                 <button style={{border:'none',outline:'none',cursor:'pointer',backgroundColor:'transparent',alignSelf:'flex-start'}} onClick={() => this.deleteNote(e)}><RxCross2 style={{paddingRight:0,marginRight:0,alignSelf:"flex-start",minWidth:30}} /></button>
                             </li>)}
                         </ul>:<div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>

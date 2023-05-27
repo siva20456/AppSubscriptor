@@ -29,6 +29,12 @@ const Chat = ({room,user}) => {
     }
 
     
+    const handleInput = e => {
+        const {value} = e.target
+        if(e.key === 'Enter'){
+            sendMsg()
+        }
+    }
 
     const sendMsg = async() => {
         if(currentMsg !== ''){
@@ -65,7 +71,7 @@ const Chat = ({room,user}) => {
                 </div>)}
             </div>
             <div className='chat-footer'>
-                <input className='chat-input' type='text' placeholder='Hey..' value={currentMsg} onChange={(e) => setMsg(e.target.value)} />
+                <input className='chat-input' type='text' placeholder='Hey..' value={currentMsg} onKeyDown={handleInput} onChange={(e) => setMsg(e.target.value)} />
                 <button className='chat-send-btn' onClick={sendMsg}><RiSendPlane2Fill /></button>
             </div>
         </div>

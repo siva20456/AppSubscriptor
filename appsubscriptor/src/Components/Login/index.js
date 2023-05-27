@@ -26,7 +26,7 @@ class Login extends Component{
     }
     
 
-    state = {currentState:'SignIn',username:'',password:'',otp:'',inputOTP:'',RegistrationDetails:{user:'',password:'',age:'',mobile:'',mail:'',isMailVerified:false,showVerifyingEles:'none'}}
+    state = {currentState:'SignIn',username:'',password:'',otp:'',inputOTP:'',vermail:'',newPass:'',cnfNewPass:'',RegistrationDetails:{user:'',password:'',age:'',mobile:'',mail:'',isMailVerified:false,showVerifyingEles:'none'}}
 
    
 
@@ -138,6 +138,54 @@ class Login extends Component{
         }
     }
 
+    verifyPassChangeOTP = (e) => {
+        e.preventDefault()
+        const {otp,inputOTP} = this.state
+        if(otp === parseInt(inputOTP)){
+            console.log('OK')
+            this.setState({currentState:'ChangePass'})
+        }else{
+            alert('Invalid OTP, try again by sending it.')
+        }
+    }
+
+    changePassword = async(e) => {
+        e.preventDefault()
+        const {username,newPass,cnfNewPass} = this.state
+
+        const data = {
+            user:username,
+            password:cnfNewPass
+        }
+
+        const options = {
+            method:'POST',
+            headers:{
+                "Content-type": "application/json; charset=UTF-8"
+              },
+              body:JSON.stringify(data)
+        }
+
+        if(newPass === cnfNewPass){
+            const res = await fetch(`http://localhost:${this.PORT}/changePassword`,options)
+            if(res.status === 200){
+                const {history} = this.props
+                alert('Successfully Changed Password')
+                this.setState({currentState:'SignIn'})
+                history.replace('/login')
+            }else{
+                alert('Someting Went Wrong...')
+            }
+        }else{
+            alert('Given different passwords')
+        }
+    }
+
+    forgetPassword = (e) => {
+        e.preventDefault()
+        this.setState({currentState:'VerifyMail'})
+    }
+
     sendMailOtp = async() => {
         const {RegistrationDetails} = this.state
         const url = `http://localhost:${this.PORT}/verifyMail`
@@ -158,6 +206,26 @@ class Login extends Component{
         }
     }
 
+    sendPassChangeMail = async(e) => {
+        e.preventDefault()
+        const url = `http://localhost:${this.PORT}/verifyMail`
+        const data = {mail:this.state.vermail}
+        const options = {
+            method:'POST',
+            headers:{
+              "Content-type": "application/json; charset=UTF-8"
+            },
+            body:JSON.stringify(data)
+        }
+        const res = await fetch(url,options)
+        // console.log(res)
+        if(res.ok){
+            const data = await res.json()
+            // console.log(data)
+            this.setState({otp:parseInt(data.otp)})
+        }
+    }
+ 
     requestRegister = async() => {
         const {RegistrationDetails} = this.state
         console.log(RegistrationDetails)
@@ -200,6 +268,38 @@ class Login extends Component{
     }
 
 
+    renderForgetPass = () => (
+        <form className="form-cont">
+            <div className="input-cont">
+            <label htmlFor="vermail" className="form-label">Email</label>
+            <input type="text" id="vermail" className="form-input" placeholder="Email" value={this.state.vermail} onChange={(e) => this.setState({vermail:e.target.value})}  />
+            <button onClick={this.sendPassChangeMail} style={{width:'fit-content'}}>send OTP</button>
+            </div>
+            <div className="input-cont">
+            <label htmlFor="verotp" className="form-label">OTP</label>
+            <input type="text" id='verotp' className="form-input" onChange={this.handleOTP}  />
+            <button onClick={this.verifyPassChangeOTP} style={{width:'fit-content'}}>Verify</button>
+            </div>
+        </form>
+    )
+
+    renderSetNewPass = () => (
+        <form className="form-cont">
+            <div className="input-cont">
+            <label htmlFor="username" className="form-label">USERNAME</label>
+            <input type="text" id="username" className="form-input" placeholder="Username" value={this.state.username} onChange={this.handleUsername}  />
+            </div>
+            <div className="input-cont">
+            <label htmlFor="newpass" className="form-label">New Password</label>
+            <input type="text" id="newpass" className="form-input" value={this.state.newPass} onChange={(e) => this.setState({newPass:e.target.value})}  />
+            </div>
+            <div className="input-cont">
+            <label htmlFor="cnfpass" className="form-label">Confirm New Password</label>
+            <input type="text" id='cnfpass' className="form-input" value={this.state.cnfNewPass} onChange={(e) => this.setState({cnfNewPass:e.target.value})}  />
+            </div>
+            <button onClick={this.changePassword} className="submit-btn">Change Password</button>
+        </form> 
+    )
 
     renderSignIn = () => (
         <form className="form-cont" onSubmit={this.handleSignIn}>
@@ -210,8 +310,9 @@ class Login extends Component{
             <div className="input-cont">
             <label htmlFor="password" className="form-label">PASSWORD</label>
             <input type="password" id='password' className="form-input" placeholder="Password" value={this.state.password} onChange={this.handlePassword}  />
+            <button type='button' onClick={this.forgetPassword} className="forget-pass-btn">forget password</button>
             </div>
-            <button className="submit-btn">Login</button>
+            <button type="submit" className="submit-btn">Login</button>
         </form>
     )
 
@@ -255,6 +356,11 @@ class Login extends Component{
                 return this.renderSignIn()
             case 'Register':
                 return this.renderRegister()
+            case 'VerifyMail':
+                return this.renderForgetPass()
+            case 'ChangePass':
+                console.log(currentState)
+                return this.renderSetNewPass()
         
             default:
                 return null;

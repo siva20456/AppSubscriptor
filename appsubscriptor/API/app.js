@@ -7,6 +7,7 @@ const {Server} = require('socket.io')
 const bcrypt = require('bcrypt')
 const sgMail = require('@sendgrid/mail')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const e = require('express')
 
 
 
@@ -101,17 +102,33 @@ const authorizeTheUser = async(req,res,next) => {
   }
 }
 
+app.post('/changePassword',async(req,res,next) => {
+  try{
+    const {user,password} = req.body
+    const hashed_password = await bcrypt.hash(password,10)
+    const feed = await db.collection('user_data').updateOne({username:user},{$set:{password:hashed_password}})
+    console.log(feed)
+    if(feed.acknowledged){
+      res.status(200).send({data:'Password Changed'})
+    }else{
+      res.status(401)
+    }
+  }catch(e){
+    console.log(e)
+    res.status(400)
+  }
+})
 
 app.post('/verifyMail',async(req,res,next) => {
   const {mail} = req.body
   console.log(req.body)
-  sgMail.setApiKey('SEND_GRID_API_KEY');
+  sgMail.setApiKey(process.env.SEND_GRID_KEY);
   const code = Math.ceil(Math.random()*100000)
   console.log(code)
  
 // setup e-mail data with unicode symbols
 var mailOptions = {
-    from: 'siva2002ismart2002@gmail.com', // sender address
+    from: process.env.FROM_MAIL, // sender address
     to: mail, // list of receivers
     subject: 'OTP for Verification', // Subject line
     text: `Your one time verification code is ${code}`, // plaintext body

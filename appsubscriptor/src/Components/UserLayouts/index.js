@@ -18,6 +18,8 @@ class UserLayouts extends Component{
         this.getData()
     }
 
+    PORT = 'LOCAL_PORT'
+
     getData = async() => {
         const options = {
             method:'GET',
@@ -26,7 +28,7 @@ class UserLayouts extends Component{
             },
         } 
         const username = Cookies.get('user')
-        const res = await fetch(`http://localhost:3005/connectedUsers/${username}`,options)
+        const res = await fetch(`http://localhost:${this.PORT}/connectedUsers/${username}`,options)
         console.log(res)
         const data = await res.json()
         console.log(data)
