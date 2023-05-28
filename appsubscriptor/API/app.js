@@ -119,6 +119,16 @@ app.post('/changePassword',async(req,res,next) => {
   }
 })
 
+app.get('/checkMail/:mail',async(req,res,next) => {
+  const {mail} = req.params
+  const data = await db.collection('user_data').findOne({mail:mail})
+  if(data === null){
+    res.status(400).send({data:'Mail Not Found'})
+  }else{
+    res.status(200).send({data:'OK'})
+  }
+})
+
 app.post('/verifyMail',async(req,res,next) => {
   const {mail} = req.body
   console.log(req.body)
@@ -177,9 +187,10 @@ app.post('/register/',async(req,res,next) => {
     const {user,password,age,mobile,mail} = req.body
     console.log(user,password,age,mobile)
     const db_user = await db.collection('user_data').findOne({"username":user})
-    console.log(db_user)
+    const mail_check = await db.collection('user_data').findOne({mail:mail})
+    // console.log(db_user)
 
-    if(db_user === null){
+    if(db_user === null && mail_check === null){
       const hashed_password = await bcrypt.hash(password,10)
       const feed = await db.collection('user_data').insertOne({username:user,password:hashed_password,age:age,mobile:mobile,mail:mail})
       const feed2 = await db.collection('chat_ids').insertOne({user,chats:[]})
@@ -192,8 +203,11 @@ app.post('/register/',async(req,res,next) => {
       res.send({jwt_token})
     }else if(db_user !== null){
       res.status(400).send({error:'Username is already in use'})
-    }else{
-      res.status(400).send({error:'Try again with defferent values'})
+    }else if(mail_check !== null){
+      res.status(400).send({error:'Mail is already in use'})
+    }
+    else{
+      res.status(400).send({error:'Try again with different values'})
     }
     // console.log(params.details)
     
@@ -326,6 +340,16 @@ app.post('/addOffer/',async(req,res,next) => {
   catch(e){
     console.error(e)
     res.status(400).send({data:'Something went wrong , Please Try Again.'})
+  }
+})
+
+app.delete('/deleteOffer/:offerId',async(req,res,next) => {
+  const {offerId} = req.params
+  const feed = await db.collection('app_data').deleteOne({_id:new ObjectId(offerId)})
+  if(feed.acknowledged){
+    res.status(200).send({data:'Deleted Successfully...'})
+  }else{
+    res.status(400).send({data:'Error Occured'})
   }
 })
 

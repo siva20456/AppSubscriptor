@@ -5,6 +5,8 @@ import Header from "../Header";
 
 import SideBar from "../SideBar";
 
+import LowerBar from "../LowerBar";
+
 import SellerTab from "../SellerTab";
 
 import {BsSearch} from 'react-icons/bs'
@@ -72,7 +74,7 @@ class Home extends Component{
             case 'Success':
                 return <ul className="list-container">
                 {newList.map(e => 
-                    <SellerTab props = {e} key={e._id} />
+                    <SellerTab details = {e} key={e._id} />
                 )}
             </ul>
         
@@ -104,6 +106,7 @@ class Home extends Component{
                         {current === 'Success'?this.renderLoading():''}
                     </div>
                 </div>
+                <LowerBar current='Home' />
             </div>
         )
     }

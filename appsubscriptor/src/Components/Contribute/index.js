@@ -6,6 +6,8 @@ import Header from "../Header";
 
 import SideBar from "../SideBar";
 
+import LowerBar from "../LowerBar";
+
 class Contribute extends Component{
 
     constructor(props){
@@ -139,7 +141,8 @@ class Contribute extends Component{
                             <button type="submit" className="submit-btn add-btn" style={{alignSelf:'flex-end',width:'10%'}}>Add</button>
                         </form>
                     </div>
-            </div>
+                </div>
+                <LowerBar current='Contribute' />
             </div>
         )
     }

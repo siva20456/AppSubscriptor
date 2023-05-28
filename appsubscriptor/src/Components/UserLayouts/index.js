@@ -4,6 +4,8 @@ import Header from "../Header";
 
 import SideBar from "../SideBar";
 
+import LowerBar from "../LowerBar";
+
 import Cookies from "js-cookie";
 
 import {BsFillArrowRightCircleFill} from 'react-icons/bs'
@@ -68,6 +70,7 @@ class UserLayouts extends Component{
                         {showChat? <Chat room={room} user={user}  /> : '' }
                     </div>
                 </div>
+                <LowerBar current='UserChat' />
             </div>
                 
         )

@@ -5,7 +5,10 @@ import Header from "../Header";
 
 import SideBar from "../SideBar";
 
+import LowerBar from "../LowerBar";
+
 import SellerTab from "../SellerTab";
+
 import Cookies from "js-cookie";
 
 class MyContributions extends Component{
@@ -57,11 +60,12 @@ class MyContributions extends Component{
                         </div>
                         :<ul className="list-container">
                             {newList.map(e => 
-                                <SellerTab props = {e} owe={true} key={e._id} />
+                                <SellerTab details = {e} owe={true} key={e._id} />
                             )}
                         </ul>}
                     </div>
                 </div>
+                <LowerBar current='MyConts' />
             </div>
     )
     }

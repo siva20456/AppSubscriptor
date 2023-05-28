@@ -208,21 +208,31 @@ class Login extends Component{
 
     sendPassChangeMail = async(e) => {
         e.preventDefault()
-        const url = `http://localhost:${this.PORT}/verifyMail`
-        const data = {mail:this.state.vermail}
-        const options = {
-            method:'POST',
-            headers:{
-              "Content-type": "application/json; charset=UTF-8"
-            },
-            body:JSON.stringify(data)
-        }
-        const res = await fetch(url,options)
-        // console.log(res)
-        if(res.ok){
-            const data = await res.json()
-            // console.log(data)
-            this.setState({otp:parseInt(data.otp)})
+        const {vermail} = this.state
+
+        //checking if mail is exist in user data or not..
+
+        const mailRes = await fetch(`http://localhost:${this.PORT}/checkMail/${vermail}`)
+        if(mailRes.status === 200){
+
+            const url = `http://localhost:${this.PORT}/verifyMail`
+            const data = {mail:vermail}
+            const options = {
+                method:'POST',
+                headers:{
+                "Content-type": "application/json; charset=UTF-8"
+                },
+                body:JSON.stringify(data)
+            }
+            const res = await fetch(url,options)
+            // console.log(res)
+            if(res.ok){
+                const data = await res.json()
+                // console.log(data)
+                this.setState({otp:parseInt(data.otp)})
+            }
+        }else{
+            alert('Mail Not Found')
         }
     }
  

@@ -4,6 +4,8 @@ import Header from "../Header";
 
 import SideBar from "../SideBar";
 
+import LowerBar from "../LowerBar";
+
 import {RxCross2} from 'react-icons/rx'
 
 import '../../OverAll.css'
@@ -57,7 +59,7 @@ class Notifications extends Component{
         if(res.status === 200){
             console.log(res)
             this.getData()
-            history.replace('/home')
+            history.replace('/')
         }
     }
 
@@ -90,6 +92,7 @@ class Notifications extends Component{
                             </div>}
                     </div>
                 </div>
+                <LowerBar current='Notifies' />
             </div>
         )
 

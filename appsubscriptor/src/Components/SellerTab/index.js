@@ -1,5 +1,6 @@
 import {BsFillArrowRightCircleFill} from 'react-icons/bs'
 
+import { withRouter } from 'react-router-dom'
 
 import Popup from 'reactjs-popup'
 
@@ -14,9 +15,14 @@ import '../../OverAll.css'
 const PORT = 'LOCAL_PORT'
 
 
-const SellerTab = ({props,owe}) => {
+const SellerTab = (props) => {
+
+
+    console.log(props)
+
+    const {details,owe} = props
     
-    const {img_url,offered_user,price,plan_duration,app_name,expiry_date,devicesIncluded,devicesLookingFor} = props
+    const {_id,img_url,offered_user,price,plan_duration,app_name,expiry_date,devicesIncluded,devicesLookingFor} = details
 
 
     const durationRemained = formatDistance(new Date(Date.now()),new Date(expiry_date))
@@ -38,6 +44,22 @@ const SellerTab = ({props,owe}) => {
     }
 
 
+
+    const DeleteOffer = async(offerId) => {
+        //deleting the contribution raised..
+        const url = `http://localhost:${PORT}/deleteOffer/${offerId}`
+        const options = {
+            method:'DELETE'
+        }
+        const response = await fetch(url,options)
+        if(response.status === 200){
+            alert('Offer Deleted Successfully..')
+            props.history.replace('/')
+        }else{
+            alert('Something Went Wrong please try agian...')
+        }
+    }
+
     const connectTheUser = async(close) => {
         console.log('connecting')
         const user = Cookies.get('user')
@@ -58,7 +80,7 @@ const SellerTab = ({props,owe}) => {
             const res = await fetch(`http://localhost:${PORT}/addNotification`,options)
             console.log(res)
             if(res.status === 200){
-                const data = await res.json()
+                // const data = await res.json()
                 alert('Chat Request raised..!')
                 close()
             }else{
@@ -81,7 +103,8 @@ const SellerTab = ({props,owe}) => {
                     <p className='price-text'><span className='price'>{`${price}/- `}</span>{plan_duration}</p>
                 </div>
                 
-                {owe === true ? '':<div className="popup-container">
+                {owe === true ? <button onClick={() => DeleteOffer(_id)} className='delete-offer-btn'>Delete Offer</button>
+                :<div className="popup-container">
                 <Popup
                     modal
                     trigger={
@@ -156,4 +179,4 @@ const SellerTab = ({props,owe}) => {
 }
 
 
-export default SellerTab
+export default withRouter(SellerTab)

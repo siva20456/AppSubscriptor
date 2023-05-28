@@ -10,12 +10,14 @@ import {BsBagCheckFill} from 'react-icons/bs'
 
 import {MdNotificationsActive} from 'react-icons/md'
 
+import Navbar from 'react-bootstrap/Navbar';
+
 
 import '../../OverAll.css'
 
 const PORT = 'LOCAL_PORT'
 
-const SideBar = ({current}) => {
+const LowerBar = ({current}) => {
 
     console.log('Implementing SideBar')
     console.log(current)
@@ -44,40 +46,35 @@ const SideBar = ({current}) => {
 
 
     return(
-        <div className='sidebar-cont'>
-            <Link to='/' style={{textDecoration:'none',width:'92%'}}>
-            <div className={`sidebar-item ${current==='Home'?'selected':''}`}>
+        <div  className='lower-cont'>
+            <Link to='/' style={{textDecoration:'none',}}>
+            <div className={`lowerbar-item ${current==='Home'?'low-selected':''}`}>
                 <AiFillHome className='side-logo' />
-                <h1 className='item-name'>Home</h1>
             </div>
             </Link>
-            <Link to='/contribute' style={{textDecoration:'none',width:'92%'}}>
+            <Link to='/myOffers' style={{textDecoration:'none',}}>
 
-            <div className={`sidebar-item ${current==='Contribute'?'selected':''}`}>
-                <AiOutlinePlusCircle className='side-logo' />
-                <h1 className='item-name'>Contribute</h1>
-            </div>
-            </Link>
-            <Link to='/myOffers' style={{textDecoration:'none',width:'92%'}}>
-
-            <div className={`sidebar-item ${current==='MyConts'?'selected':''}`}>
+            <div className={`lowerbar-item ${current==='MyConts'?'low-selected':''}`}>
                 <BsBagCheckFill className='side-logo' />
-                <h1 className='item-name'>My Contributions</h1>
             </div>
             </Link>
-            <Link to='/notifications' style={{textDecoration:'none',width:'92%'}}>
+            <Link to='/contribute' style={{textDecoration:'none',}}>
 
-            <div className={`sidebar-item ${current==='Notifies'?'selected':''}`}>
+            <div className={`lowerbar-item ${current==='Contribute'?'low-selected':''}`}>
+                <AiOutlinePlusCircle className='side-logo' />
+            </div>
+            </Link>
+            <Link to='/notifications' style={{textDecoration:'none',}}>
+
+            <div className={`lowerbar-item ${current==='Notifies'?'low-selected':''}`}>
                 <MdNotificationsActive className='side-logo' />
-                <h1 className='item-name'>Notifications</h1>
                 <span className='count-notes'>{Notes > 0 ? Notes:''}</span>
             </div>
             </Link>
-            <Link to='/userChat' style={{textDecoration:'none',width:'92%'}}>
+            <Link to='/userChat' style={{textDecoration:'none',}}>
 
-            <div className={`sidebar-item ${current==='UserChat'?'selected':''}`}>
+            <div className={`lowerbar-item ${current==='UserChat'?'low-selected':''}`}>
                 <AiOutlineMessage className='side-logo' />
-                <h1 className='item-name'>Connected Users</h1>
             </div>
             </Link>
         </div>
@@ -85,4 +82,4 @@ const SideBar = ({current}) => {
 
 }
 
-export default SideBar
+export default LowerBar
