@@ -46,7 +46,7 @@ class Contribute extends Component{
         this.setState({amount:value})
     }
 
-    PORT = 'LOCAL_PORT'
+    PORT = 3005
 
     addOffer = async(options) => {
         const url = `http://localhost:${this.PORT}/addOffer`
@@ -70,11 +70,11 @@ class Contribute extends Component{
         const {amount,plan,expiry,devicesIncluded,devicesLookingFor,platform} = this.state
         let imgUrl = ''
         if(platform === 'Netflix'){
-            imgUrl = 'https://img.icons8.com/color/48/null/netflix.png'
+            imgUrl = 'https://img.icons8.com/3d-fluency/94/netflix-desktop-app.png'
         }else if(platform === 'Disney+'){
             imgUrl = 'https://img.icons8.com/nolan/64/disney-plus.png'
         }else if(platform === 'Amazon Prime'){
-            imgUrl = 'https://img.icons8.com/nolan/64/amazon-prime-video.png'
+            imgUrl = "https://img.icons8.com/color/96/amazon-prime.png"
         }else if(platform === 'HBO'){
             imgUrl = 'https://img.icons8.com/nolan/64/hbo.png'
         }
@@ -138,7 +138,7 @@ class Contribute extends Component{
                                 <input type="number" id="looking" className="form-input contribute-input" placeholder="Number" onChange={this.devicesLookingForHandler}  value={devicesLookingFor} />
                             </div>
                             </div>
-                            <button type="submit" className="submit-btn add-btn" style={{alignSelf:'flex-end',width:'10%'}}>Add</button>
+                            <button type="submit" className="add-btn" style={{alignSelf:'flex-end'}}>Add</button>
                         </form>
                     </div>
                 </div>

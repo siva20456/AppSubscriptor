@@ -20,7 +20,7 @@ class UserLayouts extends Component{
         this.getData()
     }
 
-    PORT = 'LOCAL_PORT'
+    PORT = 3005
 
     getData = async() => {
         const options = {
@@ -61,13 +61,19 @@ class UserLayouts extends Component{
                     <SideBar current='UserChat' />
                     <div className="user-layout-cont">
                         <h1 className="heading" >Users Connected</h1>
+                        <div className="user-lay-row-cont">
                         <ul className="layout-cont">
                         {usersList.map(e => <li className="user-tab" key={e}>
                             <h1 className="user-dec">{e}</h1>
                             <button className="start-btn" onClick={() => this.chatWithUser(e)} ><BsFillArrowRightCircleFill /></button>
                         </li>)}
                         </ul>
-                        {showChat? <Chat room={room} user={user}  /> : '' }
+                        {showChat? <Chat room={room} user={user}  /> : <div className="loading-cont" style={{marginTop:30,justifySelf:'center'}}><iframe src="https://embed.lottiefiles.com/animation/140605" style={{outline:'none',border:'none',marginLeft:'auto'}}></iframe></div> }
+                    </div>
+                    <div className="loading-cont" style={{alignSelf:'center'}}>
+                        <iframe src="https://embed.lottiefiles.com/animation/94789" style={{outline:'none',border:'none'}}></iframe>
+                        <p style={{color:'green',fontSize:10}}>Break the wait for fantasy subscription.</p>
+                    </div>
                     </div>
                 </div>
                 <LowerBar current='UserChat' />

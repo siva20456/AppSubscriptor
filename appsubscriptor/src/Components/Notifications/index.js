@@ -25,9 +25,10 @@ class Notifications extends Component{
         this.getData()
     }
 
-    PORT  = 'LOCAL_PORT'
+    PORT  = 3005
 
     getData = async() => {
+        const {history} = this.props
         const jwt_token = Cookies.get('jwt_token')
         const options = {
             method:'GET',
@@ -42,7 +43,7 @@ class Notifications extends Component{
         if(data.length === 0){
             this.setState({current:'empty'})
         }else{
-            this.setState({data})
+            this.setState({data,current:'Succ'},history.replace('/notifications'))
         }
     }
 
@@ -59,6 +60,9 @@ class Notifications extends Component{
         if(res.status === 200){
             console.log(res)
             this.getData()
+        }
+        const {data} = this.state
+        if(data.length === 0){
             history.replace('/')
         }
     }
@@ -71,7 +75,7 @@ class Notifications extends Component{
 
     render(){
 
-        const {data} = this.state
+        const {data,current} = this.state
 
         return(
             <div className="home-page">
@@ -80,9 +84,9 @@ class Notifications extends Component{
                     <SideBar current='Notifies' />
                     <div className="notify-cont">
                         <h1 className="heading">Notifications</h1>
-                        {data.length !== 0?<ul className="list-note-container">
+                        {current === 'Succ'?<ul className="list-note-container">
                             {data.map((e,i) => <li className="note-tab" key = {i}>
-                                <h1 className="app-desc">{e.description}</h1>
+                                <h1 className="note-desc">{e.description}</h1>
                                 <button type="button" onClick={this.handleChat} className="chat-btn">Chat</button>
                                 <button style={{border:'none',outline:'none',cursor:'pointer',backgroundColor:'transparent',alignSelf:'flex-start'}} onClick={() => this.deleteNote(e)}><RxCross2 style={{paddingRight:0,marginRight:0,alignSelf:"flex-start",minWidth:30}} /></button>
                             </li>)}

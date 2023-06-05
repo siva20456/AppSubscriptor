@@ -15,7 +15,7 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import '../../OverAll.css'
 
-const PORT = 'LOCAL_PORT'
+const PORT = 3005
 
 const LowerBar = ({current}) => {
 

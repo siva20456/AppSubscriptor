@@ -6,6 +6,7 @@
     height: 100vh;
     padding: 20px;
     background-color: #ffffff;
+    width: 100%;
 }
 
 .form-cont{
@@ -18,6 +19,12 @@
     border-radius: 5px;
     box-shadow: 4px 4px 2px #000000;
     width: 25%;
+}
+
+@media  screen and (max-width:600px) {
+    .form-cont{
+        width: 100%;
+    }
 }
 
 .input-cont{
@@ -69,6 +76,12 @@
     border-radius: 10px;
     height: 35px;
     margin: 10px;
+}
+
+@media  screen and (max-width:600px) {
+    .submit-btn{
+        font-size: 10px;
+    }
 }
 
 
@@ -165,7 +178,7 @@
 }
 @media  screen and (max-width:600px) {
     .header-logo{
-        width: 6%;
+        width: 8%;
     }
 }
 
@@ -233,6 +246,28 @@
     }
 }
 
+@media  screen and (max-width:756px) {
+    .search-container{
+        width: 45%;
+        height: fit-content;
+    }
+}
+
+@media  screen and (max-width:550px) {
+    .search-container{
+        width: 50%;
+        height: 30px;
+    }
+}
+
+@media  screen and (max-width:470px) {
+    .search-container{
+        width: 100%;
+        height: 28px;
+    }
+}
+
+
 .search-input{
     outline: none;
     border: none;
@@ -271,6 +306,25 @@
     padding: 5px;
 }
 
+@media screen and (max-width:1050px){
+    .app-logo{
+        width: 20%;
+    }
+}
+
+@media screen and (max-width:700px){
+    .app-logo{
+        width: 15%;
+        height: 150px;
+    }
+}
+@media screen and (max-width:700px){
+    .app-logo{
+        width: 14%;
+        height: 120px;
+    }
+}
+
 .decription-cont{
     display: flex;
     flex-direction: column;
@@ -292,6 +346,28 @@
     font-weight: 500;
     padding: 10px;
 }
+
+@media screen and (max-width:1000px){
+    .app-desc{
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width:756px){
+    .app-desc{
+        font-size: 12px;
+    }
+    .user-desc{
+        font-size: 13px;
+    }
+}
+@media screen and (max-width:650px){
+    .app-desc{
+       display: none;
+    }
+}
+
+
 
 .last-det{
     display: flex;
@@ -318,6 +394,18 @@
     font-weight: bold;
 }
 
+@media  screen and (max-width:1000px) {
+    .price{
+        font-size: 30px;
+    }
+}
+
+@media  screen and (max-width:756px) {
+    .price{
+        font-size: 25px;
+    }
+}
+
 .grab-btn{
     display: flex;
     background-color: transparent;
@@ -331,6 +419,46 @@
     width: 40%;
     align-self: flex-end;
 }
+
+.grab-arrow{
+    color: green;
+}
+
+
+
+@media  screen and (max-width:1350px) {
+    .grab-btn{
+        width: 50%;
+    }
+}
+
+@media  screen and (max-width:1200px) {
+    .grab-btn{
+        width: 60%;
+    }
+}
+
+@media  screen and (max-width:1200px) {
+    .grab-btn{
+        width: 60%;
+    }
+}
+
+@media  screen and (max-width:1000px) {
+    .grab-arrow{
+        display: none;
+    }
+}
+
+@media  screen and (max-width:756px) {
+    .grab-arrow{
+        display: flex;
+    }
+    .grab-txt{
+        display: none;
+    }
+}
+
 
 .sidebar-cont{
     display: flex;
@@ -454,6 +582,27 @@
     }
 }
 
+.add-btn{
+    background-color: lightcoral;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 10%;
+    color: #000000;
+    font-weight: bold;
+    font-size: 15px;
+    align-self: flex-end;
+    border-radius: 10px;
+    height: 35px;
+    margin: 10px;
+}
+
+@media screen and (max-width:600px) {
+    .add-btn{
+        width: 15%;
+    }
+}
+
 .adder-form{
     padding: 20px;
     display: flex;
@@ -558,6 +707,19 @@
     width: 90%;
     height: 85vh;
 }
+.note-desc{
+    color: rgb(87, 86, 86);
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Bree Serif';
+    padding: 10px;
+}
+
+@media screen and (max-width:600px) {
+    .note-desc{
+        font-size: 14px;
+    }
+}
 
 @media  screen and (max-width:899px) {
     .notify-cont{
@@ -573,6 +735,14 @@
     justify-content: flex-start;
     align-items: center;
 }
+
+@media  screen and (max-width:899px) {
+    .list-note-container{
+        height: 60vh;
+        overflow-y: scroll;
+    }
+}
+
 
 .note-tab{
     display: flex;
@@ -595,6 +765,19 @@
     border-radius: 5px;
     background-color: transparent;
     cursor: pointer;
+}
+
+@media screen and (max-width:600px) {
+    .chat-btn{
+        width: 14%;
+    }
+}
+
+@media screen and (max-width:400px) {
+    .chat-btn{
+        width: 17%;
+        height: 30px;
+    }
 }
 
 .chat-btn:hover{
@@ -620,7 +803,7 @@
 }
 
 .delete-offer-btn{
-    font-size: 10px;
+    font-size: 15px;
     background-color: transparent;
     border: solid 1px red;
     color: blue;
@@ -631,13 +814,19 @@
     align-self: flex-end;
 }
 
+@media  screen and (max-width:1000px) {
+    .delete-offer-btn{
+        width: 50%;
+    }
+}
+
 .user-layout-cont{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     background-color: #ffffff;
-    height: 85vh;
+    height: 90vh;
     overflow-y: scroll;
     width: 80%;
     padding-right: 20px;
@@ -647,21 +836,44 @@
 @media  screen and (max-width:899px) {
     .user-layout-cont{
         margin-top: 60px;
-        align-self: center;
         padding-top: 20px;
+        width: 100%;
     }
 }
 
+
 .layout-cont{
     display: flex;
-    flex-direction: row;
-    align-self: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    width: 100%;
+    flex-direction: column;
+    align-self: flex-start;
+    justify-content: flex-start;
     list-style-type: none;
-    
+    height: 70vh;
+    overflow-y: scroll;
 }
+
+.user-lay-row-cont{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+@media  screen and (max-width:576px) {
+    .user-lay-row-cont{
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .layout-cont{
+        flex-direction: row;
+        align-self: center;
+        height: auto;
+        flex-wrap: wrap;
+    }
+}
+
 
 .user-tab{
     display: flex;
@@ -822,4 +1034,87 @@
 .popup-tr-text{
     color: #000000;
     font-size: 16px;
+}
+
+
+/* payments styles */
+
+.payment-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 50px;
+    margin-left: 20px;
+    width: 80%;
+    overflow-y: scroll;
+    /* height: 85vh; */
+}
+
+.raise-pay-btn{
+    align-self: flex-end;
+    background-color: blue;
+    color: white !important;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    width: fit-content;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+}
+
+.pending-pays-cont{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 20px;
+    flex-wrap: wrap;
+    width: 90%;
+}
+
+.pending-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: solid 1px black;
+    width: 30%;
+    margin: 5px;
+}
+
+.requested-user{
+    color: green;
+    font-size: 18px;
+    text-decoration: underline;
+    font-weight: bold;
+    align-self: center;
+}
+
+.pending-card-text{
+    color: grey;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pending-card-value{
+    color: green;
+    font-size: 15px;
+}
+
+.pay-btn{
+    border: none;
+    background-color: purple;
+    border-radius: 4px;
+    width: fit-content;
+    align-self: flex-end;
+    color: white;
+    font-size: 15px;
+    padding: 5px;
+    cursor: pointer;
 }

@@ -30,7 +30,7 @@ class Home extends Component{
         this.getData()
     }
 
-    PORT = 'LOCAL_PORT'
+    PORT = 3005
 
     getData = async() => {
         this.setState({current:'Loading'})

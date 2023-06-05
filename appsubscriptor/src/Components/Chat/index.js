@@ -4,7 +4,7 @@ import {RiSendPlane2Fill} from 'react-icons/ri'
 import '../../OverAll.css'
 import Cookies from 'js-cookie'
 
-const PORT = 'LOCAL_PORT'
+const PORT = 3005
 const socket = io.connect(`http://localhost:${PORT}`)
 
 const Chat = ({room,user}) => {
@@ -48,6 +48,7 @@ const Chat = ({room,user}) => {
             await socket.emit("send_message",msgData)
             setMsgList([...messagesList,{text:currentMsg,user:thisSideUser}])
             setMsg('')
+            
         }
     }
 

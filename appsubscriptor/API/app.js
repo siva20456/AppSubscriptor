@@ -7,9 +7,7 @@ const {Server} = require('socket.io')
 const bcrypt = require('bcrypt')
 const sgMail = require('@sendgrid/mail')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const e = require('express')
-
-
+// const e = require('express')
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(process.env.URI, {
@@ -129,6 +127,55 @@ app.get('/checkMail/:mail',async(req,res,next) => {
   }
 })
 
+app.post('/raisePayment',async(req,res,next) => {
+  try{
+    const {username,raisedUser,plan,platform,amount,count} = req.body
+    const data = {
+      customer:username,
+      owner:raisedUser,
+      time:`${count} ${plan}${count>0?'s':''}`,
+      platform,
+      amount:count*amount,
+      count,
+      status:'Requested'
+    }
+    const feed = await db.collection('payments').insertOne(data)
+    if(feed.acknowledged ){
+      res.status(200).send({data:'Payment raised succesfully'})
+    }else{
+      res.status(400).send({data:'Please try agian..'})
+    }
+  }catch(e){
+    res.status(400).send({data:'Something went wrong'})
+  }
+})
+
+app.get('/payments',authorizeTheUser,async(req,res,next)=>{
+  try{
+    const {username} = req
+    // console.log(username)
+    const pending = await db.collection('payments').find({customer:username}).toArray()
+    const raised = await db.collection('payments').find({owner:username}).toArray()
+    res.status(200).send({pending,raised})
+  }catch(e){
+    console.log(e)
+    res.status(400)
+  }
+})
+
+
+app.get('/checkUser/:username',async(req,res,next) => {
+  const {username} = req.params
+  const data = await db.collection('user_data').findOne({username:username})
+  if(data === null){
+    res.status(400).send({data:'Done'})
+  }else{
+    res.status(200).send({data:'Done'})
+  } 
+})
+
+app.get('/')
+
 app.post('/verifyMail',async(req,res,next) => {
   const {mail} = req.body
   console.log(req.body)
@@ -238,6 +285,21 @@ app.get('/notifications',authorizeTheUser,async(req,res,next) => {
     res.status(400).send({data:'Something went wrong... Please try again.'})
   }
 })
+
+// app.post('/addChatNotification',async(req,res,next) => {
+//   try{
+//     const {platform,raised_for,raised_by,description} = req.body
+//     const feed = await db.collection('notifications').insertOne({platform,raised_by,raised_for,description})
+//     if(feed.acknowledged){
+//       res.status(200).send({data:'Notification Added'})
+//     }else{
+//       res.status(400)
+//     }
+//   }catch(e){
+//     console.log(e)
+//     res.status(400)
+//   }
+// })
 
 app.post('/addNotification',async(req,res,next) => {
   try{

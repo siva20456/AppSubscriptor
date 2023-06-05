@@ -4,10 +4,10 @@ import Login from './Components/Login'
 import Home from './Components/Home'
 import Contribute from './Components/Contribute';
 import ProtectedRoute from './Components/ProtectedRoute';
-import Chat from './Components/Chat'
 import Notifications from './Components/Notifications';
 import MyContributions from './Components/MyContributions';
 import UserLayouts from './Components/UserLayouts';
+import Payments from './Components/Payment';
 import './App.css';
 
 class App extends Component{
@@ -18,7 +18,6 @@ class App extends Component{
     super(props)
     console.log(props)
   }
-
  
 
   render(){
@@ -34,6 +33,7 @@ class App extends Component{
         <ProtectedRoute exact path='/notifications' component={Notifications} />
         <ProtectedRoute exact path='/myOffers' component={MyContributions} />
         <ProtectedRoute exact path='/userChat' component={UserLayouts} />
+        <ProtectedRoute exact path='/payments' component={Payments} />
       </Switch>
       </BrowserRouter>
     )

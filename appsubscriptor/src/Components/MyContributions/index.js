@@ -21,7 +21,7 @@ class MyContributions extends Component{
         this.getData()
     }
 
-    PORT = 'LOCAL_PORT'
+    PORT = 3005
 
     getData = async() => {
         const url = `http://localhost:${this.PORT}`

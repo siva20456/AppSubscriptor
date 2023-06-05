@@ -10,10 +10,12 @@ import {BsBagCheckFill} from 'react-icons/bs'
 
 import {MdNotificationsActive} from 'react-icons/md'
 
+import {TbCoinRupee} from 'react-icons/tb'
+
 
 import '../../OverAll.css'
 
-const PORT = 'LOCAL_PORT'
+const PORT = 3005
 
 const SideBar = ({current}) => {
 
@@ -78,6 +80,13 @@ const SideBar = ({current}) => {
             <div className={`sidebar-item ${current==='UserChat'?'selected':''}`}>
                 <AiOutlineMessage className='side-logo' />
                 <h1 className='item-name'>Connected Users</h1>
+            </div>
+            </Link>
+            <Link to='/payments' style={{textDecoration:'none',width:'92%'}}>
+
+            <div className={`sidebar-item ${current==='Payments'?'selected':''}`}>
+                <TbCoinRupee className='side-logo' />
+                <h1 className='item-name'>Payment Section</h1>
             </div>
             </Link>
         </div>
