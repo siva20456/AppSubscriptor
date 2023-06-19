@@ -24,7 +24,7 @@ const SellerTab = (props) => {
 
     const {details,owe} = props
     
-    const {_id,img_url,offered_user,price,plan_duration,app_name,expiry_date,devicesIncluded,devicesLookingFor} = details
+    const {_id,img_url,offered_user,price,plan_type,app_name,expiry_date,devicesIncluded,devicesLookingFor} = details
 
 
     const durationRemained = formatDistance(new Date(Date.now()),new Date(expiry_date))
@@ -62,6 +62,29 @@ const SellerTab = (props) => {
         }
     }
 
+    const payReq = async(close) => {
+        const notificationData = {
+            platform:app_name,
+            raised_for:offered_user,
+            raised_by:Cookies.get('user'),
+            description:`Hey ${offered_user}, ${Cookies.get('user')} is requesting you to raise a payment for the ${app_name} ${plan_type} offer.`,
+            type:'PayRequest'
+        }
+
+        const notificationOptions = {
+            method:'POST',
+            headers:{
+                "Content-type": "application/json; charset=UTF-8",
+            },
+            body:JSON.stringify(notificationData),
+        }
+
+        const res = await fetch(`http://localhost:${PORT}/addPaymentNotification`,notificationOptions)
+        const data = await res.json()
+        alert(data.data)
+        close()
+    }
+
     const connectTheUser = async(close) => {
         console.log('connecting')
         const user = Cookies.get('user')
@@ -70,7 +93,8 @@ const SellerTab = (props) => {
                 platform:app_name,
                 raised_for:offered_user,
                 raised_by:user,
-                description:`Hey ${offered_user}, you have a chat request from ${user} regarding the ${app_name} offer you raised...`
+                description:`Hey ${offered_user}, you have a chat request from ${user} regarding the ${app_name} offer you raised...`,
+                type:'Connection'
             }
             const options = {
                 method:'POST',
@@ -102,7 +126,7 @@ const SellerTab = (props) => {
             </div>
             <div className='last-det'>
                 <div className='price-cont'>
-                    <p className='price-text'><span className='price'>{`${price}/- `}</span>{plan_duration}</p>
+                    <p className='price-text'><span className='price'>{`${price}/- `}</span>{plan_type}</p>
                 </div>
                 
                 {owe === true ? <button onClick={() => DeleteOffer(_id)} className='delete-offer-btn'><ImBin /></button>
@@ -168,6 +192,14 @@ const SellerTab = (props) => {
                         onClick={() => connectTheUser(close)}
                         >
                         Connect
+                        </button>
+                        <button
+                        type="button"
+                        className="trigger-button"
+                        style={{cursor:'pointer'}}
+                        onClick={() => payReq(close)}
+                        >
+                        Payment Request
                         </button>
                         </div>
                         </div>

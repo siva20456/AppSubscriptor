@@ -6,11 +6,12 @@ import Cookies from 'js-cookie'
 
 import {AiFillHome,AiOutlinePlusCircle,AiOutlineMessage} from 'react-icons/ai'
 
+import {TbCoinRupee} from 'react-icons/tb'
+
 import {BsBagCheckFill} from 'react-icons/bs'
 
 import {MdNotificationsActive} from 'react-icons/md'
 
-import Navbar from 'react-bootstrap/Navbar';
 
 
 import '../../OverAll.css'
@@ -75,6 +76,12 @@ const LowerBar = ({current}) => {
 
             <div className={`lowerbar-item ${current==='UserChat'?'low-selected':''}`}>
                 <AiOutlineMessage className='side-logo' />
+            </div>
+            </Link>
+            <Link to='/payments' style={{textDecoration:'none'}}>
+
+            <div className={`lowerbar-item ${current==='Payments'?'low-selected':''}`}>
+                <TbCoinRupee className='side-logo' />
             </div>
             </Link>
         </div>

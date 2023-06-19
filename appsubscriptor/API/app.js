@@ -8,6 +8,11 @@ const bcrypt = require('bcrypt')
 const sgMail = require('@sendgrid/mail')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 // const e = require('express')
+const Razorpay = require('razorpay')
+const { validatePaymentVerification } = require('../node_modules/razorpay/dist/utils/razorpay-utils');
+
+
+const instance = new Razorpay({key_id:process.env.RAZOR_KEY_ID,key_secret:process.env.RAZOR_KEY_SECRET})
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(process.env.URI, {
@@ -65,7 +70,7 @@ const db = client.db("AppSubscriptor")
 
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3004");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept , Authorization");
   next()
 });
@@ -130,36 +135,75 @@ app.get('/checkMail/:mail',async(req,res,next) => {
 app.post('/raisePayment',async(req,res,next) => {
   try{
     const {username,raisedUser,plan,platform,amount,count} = req.body
+    
+    const multiplied_amt = count * amount
+    const oustanding_amt = Math.ceil(multiplied_amt + (multiplied_amt * 0.1))
+
+    var options = {
+      amount:oustanding_amt*100,  // amount in the smallest currency unit
+      currency: "INR",
+      receipt: 'Receipt001'
+    };
+    const order = await instance.orders.create(options)
     const data = {
       customer:username,
       owner:raisedUser,
-      time:`${count} ${plan}${count>0?'s':''}`,
+      time:`${count} ${plan}${count>1?'s':''}`,
       platform,
-      amount:count*amount,
       count,
-      status:'Requested'
+      status:'Requested',
+      order_id:order.id,
+      amount:oustanding_amt,
+      receipt:order.receipt,
+
     }
+
+    console.log(order)
     const feed = await db.collection('payments').insertOne(data)
+
+    
     if(feed.acknowledged ){
       res.status(200).send({data:'Payment raised succesfully'})
     }else{
       res.status(400).send({data:'Please try agian..'})
     }
   }catch(e){
+    console.log(e)
     res.status(400).send({data:'Something went wrong'})
   }
+})
+
+
+app.get('/getRazorAPI',async(req,res,next)=>{
+  res.send({api:process.env.RAZOR_KEY_ID})
 })
 
 app.get('/payments',authorizeTheUser,async(req,res,next)=>{
   try{
     const {username} = req
     // console.log(username)
-    const pending = await db.collection('payments').find({customer:username}).toArray()
-    const raised = await db.collection('payments').find({owner:username}).toArray()
-    res.status(200).send({pending,raised})
+    const pending = (await db.collection('payments').find({customer:username,status:'Requested'}).toArray()).reverse()
+    const raised =  (await db.collection('payments').find({owner:username}).toArray()).reverse()
+    const completed = (await db.collection('payments').find({customer:username,status:'Successful'}).toArray()).reverse()
+    res.status(200).send({pending,raised,completed})
   }catch(e){
     console.log(e)
     res.status(400)
+  }
+})
+
+app.post('/paymentVerification',async(req,res,next)=> {
+  console.log(req.body)
+  const {order_id,razorpay_payment_id,razorpay_order_id,razorpay_signature} = req.body
+
+  // res.status(200).send({data:'Success'})
+  const isValid = validatePaymentVerification({order_id:order_id,payment_id:razorpay_payment_id},razorpay_signature,process.env.RAZOR_KEY_SECRET)
+  console.log(isValid)
+  if(isValid){
+    const feed  = await db.collection('payments').updateOne({order_id:order_id},{$set:{status:'Successful',payment_id:razorpay_payment_id}})
+    res.status(200).send({pay_id:razorpay_payment_id})
+  }else{
+    res.status(400).send('Try Again')
   }
 })
 
@@ -303,8 +347,8 @@ app.get('/notifications',authorizeTheUser,async(req,res,next) => {
 
 app.post('/addNotification',async(req,res,next) => {
   try{
-    const {platform,raised_for,raised_by,description} = req.body
-    const feed = await db.collection('notifications').insertOne({platform,raised_by,raised_for,description})
+    const {platform,raised_for,raised_by,description,type} = req.body
+    const feed = await db.collection('notifications').insertOne({platform,raised_by,raised_for,description,type})
     let arr = [raised_by,raised_for]
     arr.sort()
     console.log(arr)
@@ -327,6 +371,18 @@ app.post('/addNotification',async(req,res,next) => {
   }catch(e){
     console.log(e)
     res.status(400).send({data:'Something went wrong... Please try again.'})
+  }
+})
+
+app.post('/addPaymentNotification',async(req,res,next) => {
+  try{
+    const {platform,raised_for,raised_by,description,type} = req.body
+    const feed = await db.collection('notifications').insertOne({platform,raised_by,raised_for,description,type})
+    if(feed.acknowledged){
+      res.status(200).send({data:'Raised Successfully..!'})
+    }
+  }catch(e){
+    res.status(400).send({data:'Something went wrong... Please try again'})
   }
 })
 
@@ -392,7 +448,7 @@ app.post('/addOffer/',async(req,res,next) => {
           // console.log(payload)
           const {username} = payload
           const {amount,plan,expiry,devicesIncluded,devicesLookingFor,platform,imgUrl} = req.body
-          const feed = await db.collection('app_data').insertOne({app_name:platform,price:amount,plan_duration:plan,offered_user:username,img_url:imgUrl,expiry_date:expiry,devicesIncluded,devicesLookingFor})
+          const feed = await db.collection('app_data').insertOne({app_name:platform,price:amount,plan_type:plan,offered_user:username,img_url:imgUrl,expiry_date:expiry,devicesIncluded,devicesLookingFor})
           console.log(feed)
           res.status(200).send({data:'Offer Added Successfully.'})
         }

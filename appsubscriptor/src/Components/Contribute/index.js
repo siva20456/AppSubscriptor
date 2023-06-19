@@ -97,7 +97,7 @@ class Contribute extends Component{
 
     render(){
         console.log('Placing a new bid')
-        const {amount,plan,expiry,devicesIncluded,devicesLookingFor} = this.state
+        const {amount,expiry,plan,devicesIncluded,devicesLookingFor} = this.state
         return(
             <div className="home-page">
                 <Header />
@@ -109,7 +109,7 @@ class Contribute extends Component{
                             <div style={{display:'flex',flexDirection:'row',width:'100%',justifyContent:'center',marginTop:30,flexWrap:'wrap'}}>
                             <div className="input-cont-contribute">
                                 <label htmlFor="platform" className="form-label">Platform</label>
-                                <select type="dropdown" id="platform" className="form-input contribute-input" placeholder="Select the Platform" onChange={this.platformHandler}  style={{height:30}} >
+                                <select type="dropdown" id="platform" className="form-input contribute-input" placeholder="Select the Platform" onChange={this.platformHandler}  style={{height:33}} >
                                     <option selected value=''>Select the Platform</option>
                                     <option id='netflix' value='Netflix'>Netfilx</option>
                                     <option id='amazonPrime' value='Amazon Prime'>Amazon Prime</option>
@@ -119,7 +119,13 @@ class Contribute extends Component{
                             </div>
                             <div className="input-cont-contribute">
                                 <label htmlFor="plan" className="form-label">Plan Type</label>
-                                <input type="text" id="plan" className="form-input contribute-input" placeholder="Type of subscription"  onChange={this.planHandler} value={plan}  />
+                                {/* <input type="text" id="plan" className="form-input contribute-input" placeholder="Type of subscription"  onChange={this.planHandler} value={plan}  /> */}
+                                <select type="dropdown" id="planType" className="form-input contribute-input"  onChange={this.planHandler}  style={{height:33}} >
+                                    <option selected value=''>Select the Plan</option>
+                                    <option id='daily' value='Daily'>Day Wise Rentals</option>
+                                    <option id='monthly' value='Monthly'>Monthly Rentals</option>
+                                    <option id='yearly' value='Yearly'>Yearly Rentals</option>
+                                </select>
                             </div>
                             <div className="input-cont-contribute">
                                 <label htmlFor="expiry" className="form-label">Expiry Date</label> 
@@ -130,7 +136,7 @@ class Contribute extends Component{
                                 <input type="number" id="devices" className="form-input contribute-input" placeholder="Number" onChange={this.devicesHandler} value={devicesIncluded}  />
                             </div> 
                             <div className="input-cont-contribute">
-                                <label htmlFor="price" className="form-label">Amount Expecting per device</label>
+                                <label htmlFor="price" className="form-label">Amount Expecting per {plan}</label>
                                 <input type="text" id="price" className="form-input contribute-input" placeholder="Amount" onChange={this.amountHandler}  value={amount} />
                             </div>
                             <div className="input-cont-contribute">

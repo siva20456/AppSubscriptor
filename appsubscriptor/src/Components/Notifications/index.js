@@ -72,6 +72,11 @@ class Notifications extends Component{
         history.replace('/userChat')
     }
 
+    handlePayment = () => {
+        const {history} = this.props
+        history.replace('/payments')
+    }
+
 
     render(){
 
@@ -87,7 +92,7 @@ class Notifications extends Component{
                         {current === 'Succ'?<ul className="list-note-container">
                             {data.map((e,i) => <li className="note-tab" key = {i}>
                                 <h1 className="note-desc">{e.description}</h1>
-                                <button type="button" onClick={this.handleChat} className="chat-btn">Chat</button>
+                                {e.type==='Connection'?<button type="button" onClick={this.handleChat} className="chat-btn">Chat</button>:<button type="button" onClick={this.handlePayment} className="chat-btn">{e.type==='Payment'?'Pay':'Raise'}</button>}
                                 <button style={{border:'none',outline:'none',cursor:'pointer',backgroundColor:'transparent',alignSelf:'flex-start'}} onClick={() => this.deleteNote(e)}><RxCross2 style={{paddingRight:0,marginRight:0,alignSelf:"flex-start",minWidth:30}} /></button>
                             </li>)}
                         </ul>:<div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>

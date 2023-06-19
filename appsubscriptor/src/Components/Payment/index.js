@@ -6,10 +6,13 @@ import SideBar from "../SideBar";
 
 import Popup from "reactjs-popup";
 
+import LowerBar from "../LowerBar";
+
 import {Triangle} from 'react-loader-spinner'
 
 import {RiAddFill} from 'react-icons/ri'
 
+// import {} from 'razorpay'
 import Cookies from "js-cookie";
 
 
@@ -17,7 +20,7 @@ class Payments extends Component{
 
     constructor(props){
         super(props)
-        this.state = {pending:[1,2,3,4,5,6,7,8],raised:[1,2,3,4,5],pendingStatus:'Loading',raisedStatus:'Loading',platform:'',amount:'',count:'',plan:'',username:''}
+        this.state = {pending:[],raised:[],completed:[],pendingStatus:'Loading',raisedStatus:'Loading',platform:'',amount:'',count:'',plan:'',username:''}
     }
 
     componentDidMount(){
@@ -39,8 +42,8 @@ class Payments extends Component{
         const res = await fetch(url,options)
         if(res.status === 200){
             const data = await res.json()
-            // console.log(data)
-            this.setState({pending:data.pending,raised:data.raised,pendingStatus:'Success',raisedStatus:'Success'})
+            console.log(data)
+            this.setState({pending:data.pending,raised:data.raised,pendingStatus:'Success',raisedStatus:'Success',completed:data.completed})
         }else{
             this.setState({pendingStatus:'Empty',raisedStatus:'Empty'})
         }
@@ -101,10 +104,31 @@ class Payments extends Component{
                     "Content-type": "application/json; charset=UTF-8"
                     }
                 }
+
+                const notificationData = {
+                    platform:platform,
+                    raised_for:username,
+                    raised_by:Cookies.get('user'),
+                    description:`Hey ${username}, you got a payment request from ${Cookies.get('user')} for ${platform} offer. Please complete the payment to avail the subscription. `,
+                    type:'Payment'
+                }
+
+                const notificationOptions = {
+                    method:'POST',
+                    headers:{
+                        "Content-type": "application/json; charset=UTF-8",
+                    },
+                    body:JSON.stringify(notificationData),
+                }
+
                 const resRaise = await fetch(`http://localhost:${this.PORT}/raisePayment`,options)
                 const responseData = await resRaise.json()
+                if(resRaise.status === 200){
+                    const note = await fetch(`http://localhost:${this.PORT}/addPaymentNotification`,notificationOptions)
+                }
                 alert(responseData.data)
                 close()
+                this.getData()
             }else{
                 alert('Requesting User Not Found')
             }
@@ -112,6 +136,63 @@ class Payments extends Component{
         }else{
             alert('Enter Valid Inputs')
         }
+    }
+
+    pay = async(payment,getData) => {
+        const keyRes = await fetch(`http://localhost:${this.PORT}/getRazorAPI`)
+        const keyData = await keyRes.json()
+        // console.log(keyData,payment)
+
+        var options = {
+            "key": keyData.api, // Enter the Key ID generated from the Dashboard
+            "amount": payment.amount*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "ORENT Services",
+            "description": "Rent Transaction",
+            "image": "https://img.icons8.com/dotty/80/null/logo.png",
+            "order_id": payment.order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": async function (response){
+                // alert(response.razorpay_payment_id);
+                // alert(response.razorpay_order_id);
+                // alert(response.razorpay_signature)
+                const postOpt = {
+                    method:'POST',
+                    body: JSON.stringify({order_id:payment.order_id,razorpay_payment_id:response.razorpay_payment_id,razorpay_order_id:response.razorpay_order_id,razorpay_signature:response.razorpay_signature}),
+                    headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                    }
+                }
+                const res = await fetch(`http://localhost:3005/paymentVerification`,postOpt)
+                if(res.status === 200){
+                    alert('Payment Success')
+                    getData()
+                }else{
+                    alert('Payment Failed')
+                }
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9000090000"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        const rzrpay = new window.Razorpay(options)
+        rzrpay.open()
+        rzrpay.on('payment.failed', function (response){
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+    });
     }
 
     renderPendingPays = () => {
@@ -124,7 +205,25 @@ class Payments extends Component{
                         <p className="pending-card-text">Platform : <span className="pending-card-value">{e.platform}</span></p>
                         <p className="pending-card-text">Plan Type : <span className="pending-card-value">{e.time}</span></p>
                         <p className="pending-card-text">Amount : <span className="pending-card-value">{`${e.amount} (${e.count} X ${parseInt(e.amount/e.count)})`}</span></p>
-                        <button className="pay-btn">Pay</button>
+                        <p className="pending-card-text">A Tax of 10% is included</p>
+                        <button onClick={() => this.pay(e,this.getData)} className="pay-btn">Pay</button>
+                    </div>
+                )}
+            </div>
+        )
+    }
+
+    renderCompletedPays = () => {
+        const {completed} = this.state
+        return(
+            <div className="pending-pays-cont">
+                {completed.map(e => 
+                    <div key={e._id} className="pending-cont">
+                        <h1 className="requested-user">{e.owner}</h1>
+                        <p className="pending-card-text">Platform : <span className="pending-card-value">{e.platform}</span></p>
+                        <p className="pending-card-text">Plan Type : <span className="pending-card-value">{e.time}</span></p>
+                        <p className="pending-card-text">Amount : <span className="pending-card-value">{`${e.amount}`}</span></p>
+                        <p className="pending-card-text">Payment Id : <span className="pending-card-value">{e.payment_id}</span></p>
                     </div>
                 )}
             </div>
@@ -142,6 +241,7 @@ class Payments extends Component{
                         <p className="pending-card-text">Platform : <span className="pending-card-value">{e.platform}</span></p>
                         <p className="pending-card-text">Plan Type : <span className="pending-card-value">{e.time}</span></p>
                         <p className="pending-card-text">Status : <span className="pending-card-value" style={{color:`${e.status === 'Requested'?'red':'green'}`}}>{e.status}</span></p>
+                        {e.status === 'Successful'&&<p className="pending-card-text">Payment Id : <span className="pending-card-value">{e.payment_id}</span></p>}
                         <button className="pay-btn">Delete</button>
                     </div>
                 )}
@@ -170,6 +270,21 @@ class Payments extends Component{
                     return this.renderEmpty()
                 }
                 return this.renderPendingPays()
+            case 'Loading':
+                return this.renderLoading()
+            case 'Empty':
+                return this.renderEmpty()
+        }
+    }
+
+    renderCompleted = () => {
+        const {pendingStatus,completed} = this.state
+        switch (pendingStatus) {
+            case 'Success':
+                if(completed.length === 0){
+                    return this.renderEmpty()
+                }
+                return this.renderCompletedPays()
             case 'Loading':
                 return this.renderLoading()
             case 'Empty':
@@ -274,9 +389,13 @@ class Payments extends Component{
                         <h1 className="heading">Pending Bills</h1>
                         {this.renderPays()}
                         <h1 className="heading">Raised Bills</h1>
-                        {this.renderRaise()}
+                        {this.renderRaise()}         
+                        <h1 className="heading">Completed Bills</h1>
+                        {this.renderCompleted()}
                     </div>
                 </div>
+                <LowerBar current='Payments' />
+
             </div>
         )
     }
