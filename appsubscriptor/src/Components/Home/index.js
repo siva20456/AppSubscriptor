@@ -11,6 +11,8 @@ import SellerTab from "../SellerTab";
 
 import {BsSearch} from 'react-icons/bs'
 
+import LoadingLogoView from '../LoadingLogoView'
+
 import '../../OverAll.css'
 import Cookies from "js-cookie";
 
@@ -18,8 +20,14 @@ import Cookies from "js-cookie";
 
 class Home extends Component{
 
+    constructor(props){
+        super()
+        console.log(props)
+        const {state} = props.location
+        this.state = {search:'',list:[],current:'Loading',offerType:'Daily',loader:state!== undefined?'Execute':'Done'}
+    }
 
-    state = {search:'',list:[],current:'Loading',offerType:'Daily'}
+    
 
     handleOfferType = (offer) => {
         this.setState({offerType:offer})
@@ -29,10 +37,22 @@ class Home extends Component{
         const {value} = e.target
         this.setState({search:value})
     }
+
+    timer = () => {
+        
+        this.setState({loader:'Done'})
+        // clearTimeout(this.interval)
+    }
   
 
     componentDidMount(){
+        this.interval = setInterval(this.timer,5000)
+
         this.getData()
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.interval)
     }
 
     PORT = 3005
@@ -93,12 +113,14 @@ class Home extends Component{
 
     render(){
         console.log('In Home Page')
-        const {search,current,offerType} = this.state
+        const {search,current,offerType,loader} = this.state
 
-        const user = Cookies.get('user')
+        const user = Cookies.get('user')  
+        console.log(loader)    
+
 
         return(
-            <div className="home-page">
+            loader === 'Done' ?<div className="home-page">
                 <Header />
                 <div className="diver">
                     <SideBar current='Home' />
@@ -118,7 +140,7 @@ class Home extends Component{
                     </div>
                 </div>
                 <LowerBar current='Home' />
-            </div>
+            </div>:<LoadingLogoView />
         )
     }
 }

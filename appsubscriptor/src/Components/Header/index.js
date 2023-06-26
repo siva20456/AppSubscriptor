@@ -6,6 +6,8 @@ import Popup from 'reactjs-popup'
 
 import '../../OverAll.css'
 
+import ORENT_LOGO from '../../ORENT_LOGO.jpg'
+
 const Header = () => {
     console.log('Header Included')
     const history = useHistory()
@@ -18,7 +20,7 @@ const Header = () => {
 
     return(
         <div className='Header-row-cont'>
-            <img src='https://img.icons8.com/dotty/80/null/logo.png' alt='logo' className='header-logo' />
+            <img src={ORENT_LOGO} alt='logo' className='header-logo' />
             <div style={{display:'flex',flexDirection:'row'}}>
             <Popup
                 trigger={

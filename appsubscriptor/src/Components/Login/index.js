@@ -12,7 +12,10 @@ import {AiOutlineArrowRight} from 'react-icons/ai'
 import {TiTick} from 'react-icons/ti'
 
 
+
 import '../../OverAll.css'
+
+import ORENT_LOGO from '../../ORENT_LOGO.jpg'
 
 
 class Login extends Component{
@@ -73,7 +76,7 @@ class Login extends Component{
             Cookies.set('jwt_token',data.jwt_token,{expires:30})
             Cookies.set('user',username,{expires:30})
             const {history} = this.props
-            history.replace('/')
+            history.replace('/',{loader:true})
         }else{
             console.log('User Not Found')
             const data = await res.json()
@@ -255,7 +258,7 @@ class Login extends Component{
             Cookies.set('jwt_token',data.jwt_token,{expires:30})
             Cookies.set('user',RegistrationDetails.user,{expires:30})
             const {history} = this.props
-            history.replace('/')
+            history.replace('/',{loader:true})
         }else{
             const data = await res.json()
             console.log(data)
@@ -337,6 +340,10 @@ class Login extends Component{
             <input type="text" id="mobile" className="form-input" placeholder="Number" onChange={this.handleRegMobile}  />
             </div>
             <div className="input-cont">
+            <label htmlFor="age" className="form-label">AGE</label>
+            <input type="number" id="age" className="form-input" placeholder="Age" onChange={this.handleRegAge}  />
+            </div>
+            <div className="input-cont">
             <label htmlFor="email" className="form-label">E-Mail <span style={{color:'red'}}>*</span>{this.state.RegistrationDetails.isMailVerified?<TiTick style={{color:"green",fontSize:20,border:'solid 1px green',borderRadius:10,marginLeft:5}} />:''}</label>
             <input type="text" id="email" className="form-input" placeholder="e-mail" onChange={this.handleRegMail}  />
             <br/>
@@ -346,10 +353,6 @@ class Login extends Component{
             <input type="text" placeholder="Enter otp" onChange={this.handleOTP} style={{display:this.state.RegistrationDetails.showVerifyingEles}} className="form-label" />{this.state.RegistrationDetails.isMailVerified?<TiTick style={{color:"green",fontSize:20,border:'solid 1px green',borderRadius:10,marginLeft:5}} />:''}
             </div>
             <button type='button'  onClick={this.verifyOtp} style={{display:this.state.RegistrationDetails.showVerifyingEles,alignSelf:'flex-start',cursor:"pointer"}} >Verify</button>
-            </div>
-            <div className="input-cont">
-            <label htmlFor="age" className="form-label">AGE</label>
-            <input type="number" id="age" className="form-input" placeholder="Age" onChange={this.handleRegAge}  />
             </div>
             <div className="input-cont">
             <label htmlFor="password" className="form-label">SET PASSWORD <span style={{color:'red'}}>*</span></label>
@@ -392,11 +395,12 @@ class Login extends Component{
     
         return(
             <div className="mainCont">
-                <img src="https://img.icons8.com/dotty/80/null/logo.png" alt='Brand Logo' className="logo" />
-
+                <img src={ORENT_LOGO} alt='Brand Logo' className="logo" />
+                {/* <logo /> */}
+                
                 <div className="rowCont">
-                    <button className="state-btn" onClick={() => this.changeState('SignIn')}><span  className="states" style={{color:signInColor,textDecoration:'none'}}>Sign In <AiOutlineArrowRight fontSize={10} /></span></button>
-                    <button className="state-btn" onClick={() => this.changeState('Register')}><span  className="states" style={{color:RegisterColor,textDecoration:'none'}}>Register <AiOutlineArrowRight fontSize={10} /></span></button>
+                    <button className="state-btn" onClick={() => this.changeState('SignIn')}><span  className="states" style={{color:signInColor,textDecoration:'none'}}>Sign In <AiOutlineArrowRight fontSize={10} className="arrow-mark" /></span></button>
+                    <button className="state-btn" onClick={() => this.changeState('Register')}><span  className="states" style={{color:RegisterColor,textDecoration:'none'}}>Register <AiOutlineArrowRight fontSize={10} className="arrow-mark" /></span></button>
 
                 </div>
                 {this.renderContext()}
