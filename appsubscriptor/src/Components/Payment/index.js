@@ -81,6 +81,21 @@ class Payments extends Component{
 
     PORT =  3005
 
+    deletePayment = async(id) => {
+        const url = `http://localhost:${this.PORT}/delPayment`
+        const options = {
+            method:'DELETE',
+            headers:{
+                "Content-type": "application/json; charset=UTF-8",
+            },
+            body:JSON.stringify({id})
+        }
+        const deleteRes = await fetch(url,options)
+        const data = await deleteRes.json()
+        alert(data.data)
+        this.getData()
+    }
+
     raisePayment = async(close) => {
         const {username,platform,plan,amount,count} = this.state
         if(username !== '' || platform !== '' || plan !== "" || amount !== '' || count !== ''){
@@ -242,7 +257,7 @@ class Payments extends Component{
                         <p className="pending-card-text">Plan Type : <span className="pending-card-value">{e.time}</span></p>
                         <p className="pending-card-text">Status : <span className="pending-card-value" style={{color:`${e.status === 'Requested'?'red':'green'}`}}>{e.status}</span></p>
                         {e.status === 'Successful'&&<p className="pending-card-text">Payment Id : <span className="pending-card-value">{e.payment_id}</span></p>}
-                        <button className="pay-btn">Delete</button>
+                        <button onClick={() => this.deletePayment(e._id)} className="pay-btn">Delete</button>
                     </div>
                 )}
             </div>

@@ -192,6 +192,20 @@ app.get('/payments',authorizeTheUser,async(req,res,next)=>{
   }
 })
 
+app.delete('/delPayment',async(req,res,next)=>{
+  try{
+    const {id} = req.body
+    const feed = await db.collection('payments').deleteOne({_id:new ObjectId(id)})
+    if(feed.acknowledged){
+      res.status(200).send({data:'Successfully Deleted'})
+    }else{
+      res.status(400).send({data:'Something went wrong..!'})
+    }
+  }catch(e){
+    res.status(400).send({data:'Something went wrong..!'})
+  }
+})
+
 app.post('/paymentVerification',async(req,res,next)=> {
   console.log(req.body)
   const {order_id,razorpay_payment_id,razorpay_order_id,razorpay_signature} = req.body
