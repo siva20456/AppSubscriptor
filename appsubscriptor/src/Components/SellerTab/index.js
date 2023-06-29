@@ -49,7 +49,7 @@ const SellerTab = (props) => {
 
     const DeleteOffer = async(offerId) => {
         //deleting the contribution raised..
-        const url = `http://localhost:${PORT}/deleteOffer/${offerId}`
+        const url = `https://orent.onrender.com/deleteOffer/${offerId}`
         const options = {
             method:'DELETE'
         }
@@ -79,7 +79,7 @@ const SellerTab = (props) => {
             body:JSON.stringify(notificationData),
         }
 
-        const res = await fetch(`http://localhost:${PORT}/addPaymentNotification`,notificationOptions)
+        const res = await fetch(`https://orent.onrender.com/addPaymentNotification`,notificationOptions)
         const data = await res.json()
         alert(data.data)
         close()
@@ -103,7 +103,7 @@ const SellerTab = (props) => {
                 },
                 body:JSON.stringify(data),
             }
-            const res = await fetch(`http://localhost:${PORT}/addNotification`,options)
+            const res = await fetch(`https://orent.onrender.com/addNotification`,options)
             console.log(res)
             if(res.status === 200){
                 // const data = await res.json()

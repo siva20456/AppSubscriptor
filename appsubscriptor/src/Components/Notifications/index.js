@@ -43,7 +43,7 @@ class Notifications extends Component{
         if(data.length === 0){
             this.setState({current:'empty'})
         }else{
-            this.setState({data,current:'Succ'},history.replace('/notifications'))
+            this.setState({data,current:'Succ'})
         }
     }
 

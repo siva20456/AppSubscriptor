@@ -33,7 +33,7 @@ app.use(express.json())
 
 const io = new Server(server,{
   cors:{
-    origin:'http://localhost:3004',
+    origin:'https://orent-interface.onrender.com',
     methods:['GET','POST'],
   },
 })
@@ -71,7 +71,7 @@ const db = client.db("AppSubscriptor")
 
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "https://orent-interface.onrender.com");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept , Authorization");
   next()
 });
