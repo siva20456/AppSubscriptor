@@ -9,7 +9,8 @@ const sgMail = require('@sendgrid/mail')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 // const e = require('express')
 const Razorpay = require('razorpay')
-const { validatePaymentVerification } = require('../node_modules/razorpay/dist/utils/razorpay-utils');
+// const { validatePaymentVerification } = require('../node_modules/razorpay/dist/utils/razorpay-utils');
+const { validatePaymentVerification } = require('./node_modules/razorpay/dist/utils/razorpay-utils');
 
 
 const instance = new Razorpay({key_id:process.env.RAZOR_KEY_ID,key_secret:process.env.RAZOR_KEY_SECRET})
