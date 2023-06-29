@@ -15,6 +15,8 @@ import {RiAddFill} from 'react-icons/ri'
 // import {} from 'razorpay'
 import Cookies from "js-cookie";
 
+import ORENT_LOGO from '../../ORENT_LOGO.jpg'
+
 
 class Payments extends Component{
 
@@ -38,7 +40,7 @@ class Payments extends Component{
             }
         }
 
-        const url = `http://localhost:${this.PORT}/payments`
+        const url = `https://orent.onrender.com/payments`
         const res = await fetch(url,options)
         if(res.status === 200){
             const data = await res.json()
@@ -82,7 +84,7 @@ class Payments extends Component{
     PORT =  3005
 
     deletePayment = async(id) => {
-        const url = `http://localhost:${this.PORT}/delPayment`
+        const url = `https://orent.onrender.com/delPayment`
         const options = {
             method:'DELETE',
             headers:{
@@ -102,7 +104,7 @@ class Payments extends Component{
 
             //checking for user
 
-            const res = await fetch(`http://localhost:${this.PORT}/checkUser/${username}`)
+            const res = await fetch(`https://orent.onrender.com/checkUser/${username}`)
             if(res.status === 200){
                 const data = {
                     username,
@@ -136,10 +138,10 @@ class Payments extends Component{
                     body:JSON.stringify(notificationData),
                 }
 
-                const resRaise = await fetch(`http://localhost:${this.PORT}/raisePayment`,options)
+                const resRaise = await fetch(`https://orent.onrender.com/raisePayment`,options)
                 const responseData = await resRaise.json()
                 if(resRaise.status === 200){
-                    const note = await fetch(`http://localhost:${this.PORT}/addPaymentNotification`,notificationOptions)
+                    const note = await fetch(`https://orent.onrender.com/addPaymentNotification`,notificationOptions)
                 }
                 alert(responseData.data)
                 close()
@@ -154,7 +156,7 @@ class Payments extends Component{
     }
 
     pay = async(payment,getData) => {
-        const keyRes = await fetch(`http://localhost:${this.PORT}/getRazorAPI`)
+        const keyRes = await fetch(`https://orent.onrender.com/getRazorAPI`)
         const keyData = await keyRes.json()
         // console.log(keyData,payment)
 
@@ -164,7 +166,7 @@ class Payments extends Component{
             "currency": "INR",
             "name": "ORENT Services",
             "description": "Rent Transaction",
-            "image": "https://img.icons8.com/dotty/80/null/logo.png",
+            "image": {ORENT_LOGO},
             "order_id": payment.order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": async function (response){
                 // alert(response.razorpay_payment_id);
@@ -177,7 +179,7 @@ class Payments extends Component{
                     "Content-type": "application/json; charset=UTF-8"
                     }
                 }
-                const res = await fetch(`http://localhost:3005/paymentVerification`,postOpt)
+                const res = await fetch(`https://orent.onrender.com/paymentVerification`,postOpt)
                 if(res.status === 200){
                     alert('Payment Success')
                     getData()

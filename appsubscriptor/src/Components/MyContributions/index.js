@@ -24,7 +24,7 @@ class MyContributions extends Component{
     PORT = 3005
 
     getData = async() => {
-        const url = `http://localhost:${this.PORT}`
+        const url = `https://orent.onrender.com`
         const res = await fetch(url)
         if(res.status === 200){
             const data = await res.json()

@@ -59,7 +59,7 @@ class Home extends Component{
 
     getData = async() => {
         this.setState({current:'Loading'})
-        const url = `http://localhost:${this.PORT}`
+        const url = 'https://orent.onrender.com'
         const res = await fetch(url)
         if(res.status === 200){
             const data = await res.json()

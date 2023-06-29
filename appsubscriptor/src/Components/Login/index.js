@@ -68,7 +68,7 @@ class Login extends Component{
                 "Content-type": "application/json; charset=UTF-8"
               }
         }
-        const res = await fetch(`http://localhost:${this.PORT}/login/`,options)
+        const res = await fetch(`https://orent.onrender.com/login/`,options)
         console.log(res)
         if(res.status === 200){
             const data = await res.json()
@@ -170,7 +170,7 @@ class Login extends Component{
         }
 
         if(newPass === cnfNewPass){
-            const res = await fetch(`http://localhost:${this.PORT}/changePassword`,options)
+            const res = await fetch(`https://orent.onrender.com/changePassword`,options)
             if(res.status === 200){
                 const {history} = this.props
                 alert('Successfully Changed Password')
@@ -191,7 +191,7 @@ class Login extends Component{
 
     sendMailOtp = async() => {
         const {RegistrationDetails} = this.state
-        const url = `http://localhost:${this.PORT}/verifyMail`
+        const url = `https://orent.onrender.com/verifyMail`
         const data = {mail:RegistrationDetails.mail}
         const options = {
             method:'POST',
@@ -215,10 +215,10 @@ class Login extends Component{
 
         //checking if mail is exist in user data or not..
 
-        const mailRes = await fetch(`http://localhost:${this.PORT}/checkMail/${vermail}`)
+        const mailRes = await fetch(`https://orent.onrender.com/checkMail/${vermail}`)
         if(mailRes.status === 200){
 
-            const url = `http://localhost:${this.PORT}/verifyMail`
+            const url = `https://orent.onrender.com/verifyMail`
             const data = {mail:vermail}
             const options = {
                 method:'POST',
@@ -250,7 +250,7 @@ class Login extends Component{
             }
             
         }
-        const res = await fetch(`http://localhost:${this.PORT}/register/`,options)
+        const res = await fetch(`https://orent.onrender.com/register/`,options)
         console.log(res)
         if(res.status === 200){
             const data = await res.json()

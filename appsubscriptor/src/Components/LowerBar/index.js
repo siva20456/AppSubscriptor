@@ -35,7 +35,7 @@ const LowerBar = ({current}) => {
                     'Authorization':`Bearer ${jwt_token}`
                 }
             }
-            const res = await fetch(`http://localhost:${PORT}/notifications`,options)
+            const res = await fetch(`https://orent.onrender.com/notifications`,options)
             const data = await res.json()
             console.log(data)
             if(data.length > 0){

@@ -37,7 +37,7 @@ class Notifications extends Component{
                 'Authorization':`Bearer ${jwt_token}`
             }
         }
-        const res = await fetch(`http://localhost:${this.PORT}/notifications`,options)
+        const res = await fetch(`https://orent.onrender.com/notifications`,options)
         const data = await res.json()
         console.log(data)
         if(data.length === 0){
@@ -56,7 +56,7 @@ class Notifications extends Component{
             },
             body:JSON.stringify({id:note._id})
         }
-        const res = await fetch(`http://localhost:${this.PORT}/removeNote`,options)
+        const res = await fetch(`https://orent.onrender.com/removeNote`,options)
         if(res.status === 200){
             console.log(res)
             this.getData()

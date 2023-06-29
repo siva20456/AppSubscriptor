@@ -49,7 +49,7 @@ class Contribute extends Component{
     PORT = 3005
 
     addOffer = async(options) => {
-        const url = `http://localhost:${this.PORT}/addOffer`
+        const url = `https://orent.onrender.com/addOffer`
         const res = await fetch(url,options)
         if(res.status === 200){
             const data = await res.json()
