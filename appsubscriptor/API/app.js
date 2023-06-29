@@ -102,7 +102,7 @@ const authorizeTheUser = async(req,res,next) => {
   catch(e){
     console.log(e)
     res.status(400).send({data:'Something went wrong... Please try again.'})
-  }
+  } 
 }
 
 app.post('/changePassword',async(req,res,next) => {
