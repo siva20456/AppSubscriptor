@@ -28,12 +28,13 @@ class App extends Component{
       <BrowserRouter>
       <Switch>
         <Route exact path='/login' component={Login} />
-        <ProtectedRoute path='/' component={Home} />
+        <ProtectedRoute exact path='/' component={Home} />
         <ProtectedRoute exact path='/contribute' component={Contribute} />
         <ProtectedRoute exact path='/notifications' component={Notifications} />
         <ProtectedRoute exact path='/myOffers' component={MyContributions} />
         <ProtectedRoute exact path='/userChat' component={UserLayouts} />
         <ProtectedRoute exact path='/payments' component={Payments} />
+        <ProtectedRoute component={Home} />
       </Switch>
       </BrowserRouter>
     )
