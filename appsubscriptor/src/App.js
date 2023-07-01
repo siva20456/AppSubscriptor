@@ -28,7 +28,7 @@ class App extends Component{
       <BrowserRouter>
       <Switch>
         <Route exact path='/login' component={Login} />
-        <ProtectedRoute exact path='/' component={Home} />
+        <ProtectedRoute path='/' component={Home} />
         <ProtectedRoute exact path='/contribute' component={Contribute} />
         <ProtectedRoute exact path='/notifications' component={Notifications} />
         <ProtectedRoute exact path='/myOffers' component={MyContributions} />
