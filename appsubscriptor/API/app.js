@@ -72,9 +72,13 @@ const db = client.db("AppSubscriptor")
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "https://orent-interface.onrender.com");
-  res.header('Access-Control-Allow-Methods', 'GET, POST,UPDATE,DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, UPDATE, DELETE, OPTIONS');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept , Authorization");
   next()
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 const authorizeTheUser = async(req,res,next) => {

@@ -34,7 +34,6 @@ class App extends Component{
         <ProtectedRoute exact path='/myOffers' component={MyContributions} />
         <ProtectedRoute exact path='/userChat' component={UserLayouts} />
         <ProtectedRoute exact path='/payments' component={Payments} />
-        <ProtectedRoute component={Home} />
       </Switch>
       </BrowserRouter>
     )
