@@ -11,6 +11,8 @@ import {RxCross2} from 'react-icons/rx'
 import '../../OverAll.css'
 import Cookies from "js-cookie";
 
+import { ThreeDots } from "react-loader-spinner";
+
 
 class Notifications extends Component{
 
@@ -28,7 +30,8 @@ class Notifications extends Component{
     PORT  = 3005
 
     getData = async() => {
-        const {history} = this.props
+        this.setState({current:'Loading'})
+        // const {history} = this.props
         const jwt_token = Cookies.get('jwt_token')
         const options = {
             method:'GET',
@@ -78,9 +81,34 @@ class Notifications extends Component{
     }
 
 
+    renderContext = () => {
+        const {current,data} = this.state
+        switch (current) {
+            case 'Succ':
+                
+                return <ul className="list-note-container">
+                            {data.map((e,i) => <li className="note-tab" key = {i}>
+                                <h1 className="note-desc">{e.description}</h1>
+                                {e.type==='Connection'?<button type="button" onClick={this.handleChat} className="chat-btn">Chat</button>:<button type="button" onClick={this.handlePayment} className="chat-btn">{e.type==='Payment'?'Pay':'Raise'}</button>}
+                                <button style={{border:'none',outline:'none',cursor:'pointer',backgroundColor:'transparent',alignSelf:'flex-start'}} onClick={() => this.deleteNote(e)}><RxCross2 style={{paddingRight:0,marginRight:0,alignSelf:"flex-start",minWidth:30}} /></button>
+                            </li>)}
+                       </ul>
+        
+            case 'Empty':
+                return <div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                        <iframe src="https://embed.lottiefiles.com/animation/121529" style={{border:'none',marginTop:30,}}></iframe>
+                        <p>No Notifications Found</p>
+                       </div>
+            case 'Loading':
+                return <div style={{alignSelf:'center',marginTop:100}}>
+                            <ThreeDots  color=" #3b82f6" height="50" width="50" />
+                       </div>
+        }
+    }
+
+
     render(){
 
-        const {data,current} = this.state
 
         return(
             <div className="home-page">
@@ -89,16 +117,7 @@ class Notifications extends Component{
                     <SideBar current='Notifies' />
                     <div className="notify-cont">
                         <h1 className="heading">Notifications</h1>
-                        {current === 'Succ'?<ul className="list-note-container">
-                            {data.map((e,i) => <li className="note-tab" key = {i}>
-                                <h1 className="note-desc">{e.description}</h1>
-                                {e.type==='Connection'?<button type="button" onClick={this.handleChat} className="chat-btn">Chat</button>:<button type="button" onClick={this.handlePayment} className="chat-btn">{e.type==='Payment'?'Pay':'Raise'}</button>}
-                                <button style={{border:'none',outline:'none',cursor:'pointer',backgroundColor:'transparent',alignSelf:'flex-start'}} onClick={() => this.deleteNote(e)}><RxCross2 style={{paddingRight:0,marginRight:0,alignSelf:"flex-start",minWidth:30}} /></button>
-                            </li>)}
-                        </ul>:<div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-                        <iframe src="https://embed.lottiefiles.com/animation/121529" style={{border:'none',marginTop:30,}}></iframe>
-                        <p>No Notifications Found</p>
-                            </div>}
+                        {this.renderContext()}
                     </div>
                 </div>
                 <LowerBar current='Notifies' />
