@@ -373,6 +373,7 @@
     align-self: center;
     border-radius: 15px;
     margin-bottom: 20px;
+    width: 90%;
 }
 
 .app-logo{
@@ -396,6 +397,11 @@
     .app-logo{
         width: 14%;
         height: 120px;
+    }
+}
+@media screen and (max-width:899px){
+    .seller-cont{
+        width: 100%;
     }
 }
 
