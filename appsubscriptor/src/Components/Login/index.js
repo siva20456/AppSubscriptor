@@ -11,8 +11,6 @@ import {AiOutlineArrowRight} from 'react-icons/ai'
 
 import {TiTick} from 'react-icons/ti'
 
-
-
 import '../../OverAll.css'
 
 import ORENT_LOGO from '../../ORENT_LOGO.jpg'
@@ -395,6 +393,7 @@ class Login extends Component{
     
         return(
             <div className="mainCont">
+                
                 <img src={ORENT_LOGO} alt='Brand Logo' className="logo" />
                 {/* <logo /> */}
                 

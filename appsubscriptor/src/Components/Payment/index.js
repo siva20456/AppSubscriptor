@@ -380,6 +380,7 @@ class Payments extends Component{
                                 </div>
                                 
                                 <p className='app-desc'>You're trying to raise a payment to {username} regarding {platform} offer of an amount {count*amount}..!</p>
+                                <p className="app-desc">Currently in developing stage..😴</p>
                                 
                                 <div>
                                 <button
