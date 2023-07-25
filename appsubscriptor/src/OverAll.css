@@ -900,6 +900,25 @@
     }
 }
 
+@media  screen and (max-width:600px) {
+    .delete-offer-btn{
+        width: 40%;
+    }
+}
+
+@media  screen and (max-width:400px) {
+    .delete-offer-btn{
+        width: 30%;
+    }
+}
+
+@media  screen and (max-width:300px) {
+    .delete-offer-btn{
+        width: 20%;
+        padding: 40px;
+    }
+}
+
 .user-layout-cont{
     display: flex;
     flex-direction: column;

@@ -129,7 +129,7 @@ const SellerTab = (props) => {
                     <p className='price-text'><span className='price'>{`${price}/- `}</span>{plan_type}</p>
                 </div>
                 
-                {owe === true ? <button onClick={() => DeleteOffer(_id)} className='delete-offer-btn'><ImBin /></button>
+                {owe === true ? <button onClick={() => DeleteOffer(_id)} className='grab-btn' style={{border:'none'}}><ImBin  /></button>
                 :<div className="popup-container">
                 <Popup
                     modal

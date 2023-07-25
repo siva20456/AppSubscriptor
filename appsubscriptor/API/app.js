@@ -276,6 +276,7 @@ app.post('/login',async(req,res,next) => {
             }
             const jwt_token = jwt.sign(payload,`Secret Token`)
             res.send({jwt_token})
+            console.log(user)
           }else{
             res.status(400).send({
               data:"Incorrect Password"
@@ -308,6 +309,7 @@ app.post('/register/',async(req,res,next) => {
             }
       const jwt_token = jwt.sign(payload,`Secret Token`)
       res.send({jwt_token})
+      console.log(user)
     }else if(db_user !== null){
       res.status(400).send({error:'Username is already in use'})
     }else if(mail_check !== null){
